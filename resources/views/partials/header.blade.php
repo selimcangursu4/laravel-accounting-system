@@ -185,6 +185,16 @@
                 </div>
             </div>
             <div class="app-navbar-item ms-1">
+                <div class="btn btn-icon btn-color-white btn-active-color-primary" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                   <a href="">
+                    <i class="fa-solid fa-gear fs-2">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    </i>
+                </a>
+                </div>
+          </div>
+            <div class="app-navbar-item ms-1">
                 <div class="btn btn-icon btn-color-white btn-active-color-primary" id="kt_drawer_chat_toggle">
                     <i class="fa-solid fa-comment-dots fs-2">
                         <span class="path1"></span>
@@ -325,6 +335,9 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
+
 </div>

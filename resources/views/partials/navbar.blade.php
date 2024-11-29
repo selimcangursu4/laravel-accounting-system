@@ -276,7 +276,7 @@
 
                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
                     <span class="menu-link">
-                        <span class="menu-title">E Fatura</span>
+                        <span class="menu-title">E-Fatura</span>
                         <span class="menu-arrow d-lg-none"></span>
                     </span>
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
