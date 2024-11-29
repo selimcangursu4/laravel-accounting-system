@@ -2,7 +2,7 @@
 @section('content')
 <div class="d-flex flex-column flex-column-fluid">
     <div class="col-md-12 mt-5">
-      <a href="" class="btn btn-primary float-end" type="button">
+      <a href="{{route('user.create')}}" class="btn btn-primary float-end" type="button">
         <i class="fa-solid fa-floppy-disk fs-2"></i> Yeni Kullanıcı Oluştur </a>
     </div>
     <div id="kt_app_content" class="app-content pb-0">
@@ -106,7 +106,6 @@
                   </tr>
                 </thead>
                 <tbody class="fs-7">
-
                 </tbody>
               </table>
           </div>
@@ -119,40 +118,43 @@
 @endsection
 @include('partials.script')
 <script>
-    $(document).ready(function(){
-        $("#kt_datatable_zero_configuration").DataTable({
-            serverSide: true;
-            processing: true,
-            ajax: {
-                type:"POST",
-                url:"{{route('user.fetch')}}",
-                data: function(d)
-                {
-                    d.search_user_id            = $("#search-user-id").val();
-                    d.search_user_gender_id     = $("#search-user-gender-id").val();
-                    d.search_user_fullname      = $("#search-user-fullname").val();
-                    d.search_user_email         = $("#search-user-email").val();
-                    d.search_user_phone         = $("#search-user-phone").val();
-                    d.search_user_department_id = $("#search-user-department-id").val();
-                    d.search_user_role_id       = $("#search-user-role-id").val();
-                    d.search_user_created_date  = $("#search-user-created-date").val();
-                    d.search_user_end_date      = $("#search-user-end-date").val();
-                }
-            },
-            columns: [
-                { data: 'id' },
-                { data: 'gender_id' },
-                { data: 'username' },
-                { data: 'name'},
-                { data: 'email'},
-                { data: 'phone'},
-                { data: 'department_id'},
-                { data: 'role_id'},
-                { data: 'created_at'},
-                { data: 'action',render:function(data,type,row){
-                    return '<span class="badge badge-primary">Görüntüle</span> <span class="badge badge-secondary">Sms Gönder</span> <span class="badge badge-danger">Spama Ekle</span>';
-                }},
-            ]
-        });
-    })
+$(document).ready(function(){
+    $("#kt_datatable_zero_configuration").DataTable({
+        serverSide: true,
+        processing: true,
+        ajax: {
+            type: "POST",
+            url: "{{ route('user.fetch') }}",
+            data: function(d) {
+                d._token = "{{ csrf_token() }}";
+                d.search_user_id = $("#search-user-id").val();
+                d.search_user_gender_id = $("#search-user-gender-id").val();
+                d.search_user_fullname = $("#search-user-fullname").val();
+                d.search_user_email = $("#search-user-email").val();
+                d.search_user_phone = $("#search-user-phone").val();
+                d.search_user_department_id = $("#search-user-department-id").val();
+                d.search_user_role_id = $("#search-user-role-id").val();
+                d.search_user_created_date = $("#search-user-created-date").val();
+                d.search_user_end_date = $("#search-user-end-date").val();
+            }
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'gender_id' },
+            { data: 'username' },
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'phone' },
+            { data: 'department_id' },
+            { data: 'role_id' },
+            { data: 'created_at' },
+            { data: 'action', render: function(data, type, row) {
+                return '<span class="badge badge-primary">Görüntüle</span> ' +
+                       '<span class="badge badge-secondary">Sms Gönder</span> ' +
+                       '<span class="badge badge-danger">Spama Ekle</span>';
+            }},
+        ]
+    });
+});
+
 </script>
