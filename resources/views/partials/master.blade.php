@@ -23,10 +23,9 @@
                      @include('partials.navbar')
 				</div>
 				<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-					<div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+					<div class="app-container container-fluid d-flex flex-row flex-column-fluid">
 						<div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                             @yield('content')
-
 							<div id="kt_app_footer" class="app-footer align-items-center justify-content-center justify-content-md-between flex-column flex-md-row py-3 py-lg-6">
 								<div class="text-dark order-2 order-md-1">
 									<span class="text-muted fw-semibold me-1">2024&copy;</span>
