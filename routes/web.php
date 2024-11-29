@@ -12,3 +12,8 @@ Route::post('/login/post',[LoginController::class, 'login'])->name('login.post')
 
 
 Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+
+
+route::get('/master' ,function(){
+    return view('partials.master');
+});

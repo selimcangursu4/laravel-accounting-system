@@ -65,8 +65,10 @@
                 {
                  if(response.success){
                     alert(response.message);
+                    window.location.href="{{route('dashboard')}}";
                  }else{
                     alert(response.message);
+                    $('#password').val('');
                  }
                 }
                 error:function(jqXHR, textStatus, errorThrown){
