@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('tax_office');
             $table->string('tax_number');
             $table->string('iban');
-            $table->boolean('marketing_consent');
+            $table->integer('marketing_consent')->default(1);
             $table->integer('status_id');
             $table->integer('user_id');
             $table->timestamps();

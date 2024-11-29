@@ -186,7 +186,7 @@
             </div>
             <div class="app-navbar-item ms-1">
                 <div class="btn btn-icon btn-color-white btn-active-color-primary" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                   <a href="">
+                   <a href="{{route('settings.index')}}">
                     <i class="fa-solid fa-gear fs-2">
                     <span class="path1"></span>
                     <span class="path2"></span>

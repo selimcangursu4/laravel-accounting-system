@@ -1,12 +1,34 @@
 @extends('partials.master')
 @section('content')
 <div class="d-flex flex-column flex-column-fluid">
-    <div class="col-md-12 mt-5">
-      <a href="{{route('user.create')}}" class="btn btn-primary float-end" type="button">
-        <i class="fa-solid fa-floppy-disk fs-2"></i> Yeni Kullanıcı Oluştur </a>
-    </div>
     <div id="kt_app_content" class="app-content pb-0">
-      <div class="card shadow-sm">
+        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+            <div class="page-title d-flex flex-column gap-3 me-3">
+                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Kullanıcılar</h1>
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                        <a href="../dist/index.html" class="text-gray-500">
+                            <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                    </li>
+                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Ayarlar</li>
+                    <li class="breadcrumb-item">
+                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                    </li>
+                    <li class="breadcrumb-item text-gray-500">Kullanıcılar</li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-3 gap-lg-5">
+                <div class="m-0">
+                    <a href="{{route('settings.index')}}" class="btn btn-flex btn-sm btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
+                </div>
+                <a href="{{route('user.create')}}" id="save" class="btn btn-flex btn-center btn-dark btn-sm px-4"><i class="fa-solid fa-floppy-disk"></i> Yeni Kullanıcı Oluştur</a>
+            </div>
+        </div>
+      <div class="card shadow-sm mt-10">
         <div class="card-header">
           <h3 class="card-title">
             <i class="fa-solid fa-filter fs-2 me-1"></i> Kullanıcı Filtrele
@@ -119,7 +141,7 @@
 @include('partials.script')
 <script>
 $(document).ready(function(){
-    $("#kt_datatable_zero_configuration").DataTable({
+    let table =  $("#kt_datatable_zero_configuration").DataTable({
         serverSide: true,
         processing: true,
         ajax: {
@@ -149,12 +171,19 @@ $(document).ready(function(){
             { data: 'role_id' },
             { data: 'created_at' },
             { data: 'action', render: function(data, type, row) {
-                return '<span class="badge badge-primary">Görüntüle</span> ' +
+                return '<span class="badge badge-dark">Görüntüle</span> ' +
                        '<span class="badge badge-secondary">Sms Gönder</span> ' +
                        '<span class="badge badge-danger">Spama Ekle</span>';
             }},
         ]
     });
+
+    $('#filterButton').click(function(e) {
+        e.preventDefault();
+
+        table.draw();
+
+    })
 });
 
 </script>

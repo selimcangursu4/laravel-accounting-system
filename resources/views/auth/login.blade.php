@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{asset('login-assets/css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{asset('login-assets/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('login-assets/css/style.css')}}">
@@ -19,7 +20,8 @@
           <div class="col-md-7">
             <h3>Hoşgeldin ! <strong>Scobject Muhasebe</strong></h3>
             <p class="mb-4">Scobject Muhasebe: Hesaplarınız Güvende, İşiniz Hızlı!</p>
-            <form action="#" method="post">
+            <form>
+                @csrf
               <div class="form-group first">
                 <label for="form-label">E-Posta Adresi</label>
                 <input type="text" class="form-control" placeholder="admin@scobject.com" id="email" name="email">
@@ -53,11 +55,12 @@
 
             const email    = $('#email').val();
             const password = $('#password').val();
-
+            const token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url:"{{route('login.post')}}",
                 type:"POST",
                 data:{
+                    _token: token,
                     email:email,
                     password:password
                 },
@@ -70,7 +73,7 @@
                     alert(response.message);
                     $('#password').val('');
                  }
-                }
+                },
                 error:function(jqXHR, textStatus, errorThrown){
                     alert('Error: '+errorThrown);
                 }

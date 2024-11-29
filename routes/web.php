@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,12 @@ Route::prefix('/sales')->group(function(){
 
 
 Route::prefix('/settings')->group(function(){
+    Route::get('/',[SettingController ::class,'index'])->name('settings.index');
     Route::get('/users/view',[UserController::class,'index'])->name('user.view');
     Route::get('/users/create',[UserController::class,'create'])->name('user.create');
     Route::post('/users/fetch',[UserController::class,'fetch'])->name('user.fetch');
+    Route::post('/update-country', [UserController::class, 'changeCountry'])->name('country.change');
+    Route::post('/change-city',[UserController::class, 'changeCity'])->name('city.change');
+    Route::post('/users/create',[UserController::class, 'store'])->name('user.store');
 
 });

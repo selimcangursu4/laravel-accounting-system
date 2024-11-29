@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('username')->nullable();
             $table->integer('role_id')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->integer('is_active')->default(1);
             $table->date('date_of_birth')->nullable();
             $table->integer('gender_id')->nullable();
             $table->text('address')->nullable();

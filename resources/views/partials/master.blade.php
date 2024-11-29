@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="title" content="Scobject Muhasebe - Güvenilir ve Kullanıcı Dostu Muhasebe Çözümü" />
 		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<link href="{{asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
 		<link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
