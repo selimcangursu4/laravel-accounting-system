@@ -19,6 +19,10 @@ Route::prefix('/sales')->group(function(){
     Route::get('/customers/view',[CustomerController::class,'index'])->name('customer.view');
     Route::post('/customers/fetch',[CustomerController::class,'fetch'])->name('customer.fetch');
     Route::get('/customers/create',[CustomerController::class,'create'])->name('customer.create');
+    Route::post('/update-country', [CustomerController::class, 'changeCountry'])->name('customer.country.change');
+    Route::post('/change-city',[CustomerController::class, 'changeCity'])->name('customer.city.change');
+    Route::post('/customers/store',[CustomerController::class, 'store'])->name('customer.store');
+
 });
 
 

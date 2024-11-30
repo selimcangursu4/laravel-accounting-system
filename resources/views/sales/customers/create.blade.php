@@ -44,7 +44,7 @@
               <div class="col-md-12">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Müşteri Tipi</label>
-                  <select class="form-select form-select-solid" data-control="select2" id="customer_type_id" name="customer_type_id" data-placeholder="Seçiniz...">
+                  <select class="form-select form-select-solid" data-control="select2" id="customer_type_id" name="customer_type_id" required data-placeholder="Seçiniz...">
                     <option></option>
                     <option value="1">Bireysel Müşteri</option>
                     <option value="2">Kurumsal Müşteri</option>
@@ -53,14 +53,14 @@
               </div>
               <div class="col-md-6">
                 <div class="mb-10">
-                  <label for="form-label" class="required form-label">Ad Soyadı</label>
-                  <input type="text" class="form-control form-control-solid" id="fullname" name="fullname" placeholder="Müşteri Adı Soyadı Giriniz.." />
+                  <label for="form-label" id="fullname-label" class="required form-label">Ad Soyadı</label>
+                  <input type="text" class="form-control form-control-solid" id="fullname" name="fullname" required placeholder="Müşteri Adı Soyadı Giriniz.." />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Telefon Numarası</label>
-                  <input type="text" class="form-control form-control-solid" id="phone" name="phone" placeholder="Müşteri Telefon Numarası Giriniz..." />
+                  <input type="text" class="form-control form-control-solid" id="phone" name="phone" required placeholder="Müşteri Telefon Numarası Giriniz..." />
                 </div>
               </div>
               <div class="col-md-6">
@@ -84,7 +84,7 @@
               <div class="col-md-6">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Pazarlama Mesaj Onayı</label>
-                  <select class="form-select form-select-solid" data-control="select2" id="marketing_consent_id" name="marketing_consent_id" data-placeholder="Seçiniz...">
+                  <select class="form-select form-select-solid" data-control="select2" id="marketing_consent_id" required name="marketing_consent_id" data-placeholder="Seçiniz...">
                     <option></option>
                     <option value="1">Pazarlama Mesajları Gönderilsin</option>
                     <option value="0">Pazarlama Mesajları Gönderilmesin</option>
@@ -94,37 +94,34 @@
               <div class="col-md-4">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Ülke</label>
-                  <select class="form-select form-select-solid" data-control="select2" id="country_id" name="country_id" data-placeholder="Seçiniz...">
+                  <select class="form-select form-select-solid" data-control="select2" id="country_id" required name="country_id" data-placeholder="Seçiniz...">
                     <option></option>
-                    <option value="1">Bireysel Müşteri</option>
-                    <option value="2">Kurumsal Müşteri</option>
+                    @foreach ($countries as $country )
+                    <option value="{{$country->id}}">{{$country->baslik}}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Şehir</label>
-                  <select class="form-select form-select-solid" data-control="select2" id="city_id" name="city_id" data-placeholder="Seçiniz...">
+                  <select class="form-select form-select-solid" data-control="select2" id="city_id" required name="city_id" data-placeholder="Seçiniz...">
                     <option></option>
-                    <option value="1">Bireysel Müşteri</option>
-                    <option value="2">Kurumsal Müşteri</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">İlçe</label>
-                  <select class="form-select form-select-solid" data-control="select2" id="district_id" name="district_id" data-placeholder="Seçiniz...">
+                  <select class="form-select form-select-solid" data-control="select2" id="district_id" required name="district_id" data-placeholder="Seçiniz...">
                     <option></option>
-                    <option value="1">Bireysel Müşteri</option>
-                    <option value="2">Kurumsal Müşteri</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="mb-10">
                   <label for="form-label" class="required form-label">Adres Bilgisi</label>
-                  <textarea class="form-control form-control-solid" id="address" name="address" rows="5"></textarea>
+                  <textarea class="form-control form-control-solid" id="address" name="address" required  rows="5"></textarea>
                 </div>
               </div>
               <div class="col-md-6">
@@ -140,16 +137,20 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="mb-10">
+                <div class="mb-10" id="tax_office_area">
                   <label for="form-label" class="required form-label">Vergi Dairesi</label>
                   <input type="text" class="form-control form-control-solid" id="tax_office" name="tax_office" placeholder="Müşterinin Bağlı Bulunduğu Vergi Dairesini Giriniz.." />
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="mb-10">
+                <div class="mb-10" id="tax_number_area">
                   <label for="form-label" class="required form-label">Vergi Numarası</label>
                   <input type="text" class="form-control form-control-solid" id="tax_number" name="tax_number" placeholder="Müşteriye Ait Vergi Numarasını Giriniz.." />
                 </div>
+                <div class="mb-10" style="display: none" id="tckn_area">
+                    <label for="form-label" class="required form-label">Tckn</label>
+                    <input type="text" class="form-control form-control-solid" id="tckn" name="tckn" placeholder="Müşteriye Ait Vergi Numarasını Giriniz.." />
+                  </div>
               </div>
               <div class="col-md-12">
                 <div class="mb-10">
@@ -162,7 +163,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-12" style="display: none">
+            <div class="col-md-12" style="display: none" id="representative_area">
               <div class="table-responsive">
                 <table class="table table-row-bordered gy-5">
                   <thead>
@@ -214,7 +215,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-12" style="display: none">
+            <div class="col-md-12" style="display: none" id="current_area">
               <div class="table-responsive">
                 <table class="table table-row-bordered gy-5">
                   <thead>
@@ -267,3 +268,188 @@
   </div>
 @endsection
 @include('partials.script')
+<script>
+    $(document).ready(function() {
+        // Müşteri Türüne Göre İnput Alanları
+        $('#customer_type_id').change(function(e) {
+            e.preventDefault();
+
+            let customer_type_id = $(this).val();
+
+            if (customer_type_id == 1) {
+                $('#fullname-label').text('Ad Soyad');
+                $('#tax_number_area').css('display', 'none');
+                $('#tckn_area').css('display', 'block');
+                $('#tax_office_area').css('display', 'none')
+            } else if (customer_type_id == 2) {
+                $('#fullname-label').text('Firma Adı');
+                $('#tax_number_area').css('display', 'block');
+                $('#tckn_area').css('display', 'none');
+                $('#tax_office_area').css('display', 'block')
+            }
+        })
+        // Temsilci Personel Var & Yok Durumu
+        $('#representavice_select').change(function(e) {
+            e.preventDefault();
+
+            let representavice_select = $(this).val();
+
+            if (representavice_select == 1) {
+                $('#representative_area').css('display', 'block');
+            } else if (representavice_select == 2) {
+                $('#representative_area').css('display', 'none');
+            }
+        })
+        //  Cari Hesap Açılışı Var & Yok
+        $('#current_select').change(function(e) {
+            e.preventDefault();
+
+            let current_select = $(this).val();
+
+            if (current_select == 1) {
+                $('#current_area').css('display', 'block');
+            } else if (current_select == 2) {
+                $('#current_area').css('display', 'none');
+            }
+        })
+            // Ülkeye Göre Şehirlerin Filtrelenmesi
+    $('#country_id').change(function(e) {
+        e.preventDefault();
+
+        const country_id = $('#country_id').val();
+        const token = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            type: "POST",
+            url: "{{ route('customer.country.change') }}",
+            data: {
+                _token: token,
+                country_id: country_id
+            },
+            success: function(response) {
+                $('#city_id').empty();
+                response.forEach(function(data) {
+                    $('#city_id').append(`<option value="${data.id}">${data.baslik}</option>`);
+                });
+            },
+
+        });
+    });
+
+
+    // Şehire Göre İlçelerin Filtrelenmesi
+    $(document).on('change', '#city_id', function(e) {
+        e.preventDefault();
+
+        const city_id = $(this).val();
+        const token = $('meta[name="csrf-token"]').attr('content');
+
+        $.ajax({
+            url: "{{route('customer.city.change')}}",
+            type: "POST",
+            data: {
+                _token: token,
+                city_id: city_id
+            },
+            success: function(response) {
+                $('#district_id').empty();
+                response.forEach(function(data) {
+                    $('#district_id').append(`<option value="${data.id}">${data.baslik}</option>`);
+                })
+            }
+        })
+    });
+
+    // Müşteriyi Kaydet
+
+    $('#save').click(function (e) {
+        e.preventDefault();
+        const token                = $('meta[name="csrf-token"]').attr('content');
+        const customer_type_id     = $('#customer_type_id').val();
+        const fullname             = $('#fullname').val();
+        const phone                = $('#phone').val();
+        const alternative_phone    = $('#alternative_phone').val();
+        const email                = $('#email').val();
+        const fax_number           = $('#fax_number').val();
+        const marketing_consent_id = $('marketing_consent_id').val();
+        const country_id           = $('country_id').val();
+        const city_id              = $('#city_id').val();
+        const district_id          = $('#district_id').val();
+        const address              = $('#address').val();
+        const postal_code          = $('#postal_code').val();
+        const iban                 = $('#iban').val();
+        const tax_office           = $('#tax_office').val();
+        const tax_number           = $('#tax_number').val();
+        const tckn                 = $('#tckn').val();
+        const representative_name  = $('#representative_name').val();
+        const representative_phone = $('#representative_phone').val();
+        const representative_email = $('#representative_email').val();
+        const representative_note  = $('#representative_note').val();
+        const current_name         = $('#current_name').val();
+        const current_date          = $('#current_date').val();
+        const current_amount        = $('#current_amount').val();
+        const current_status_id     = $('#current_status_id').val();
+
+        $.ajax({
+            type:"POST",
+            url:"{{route('customer.store')}}",
+            data:{
+                _token: token,
+                customer_type_id: customer_type_id,
+                fullname: fullname,
+                phone: phone,
+                alternative_phone: alternative_phone,
+                email: email,
+                fax_number: fax_number,
+                marketing_consent_id: marketing_consent_id,
+                country_id: country_id,
+                city_id: city_id,
+                district_id: district_id,
+                address: address,
+                postal_code: postal_code,
+                iban: iban,
+                tax_office: tax_office,
+                tax_number: tax_number,
+                tckn: tckn,
+                representative_name: representative_name,
+                representative_phone: representative_phone,
+                representative_email: representative_email,
+                representative_note: representative_note,
+                current_name: current_name,
+                current_date: current_date,
+                current_amount:current_amount,
+                current_status_id:current_status_id
+            },success:function(response)
+            {
+                if(response.success)
+            {
+                console.log(response.message);
+                Swal.fire({
+                icon:"success",
+                title: response.message,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Tamam",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                window.location.href = "{{route('customer.view')}}";
+                }
+                });
+            }else{
+                console.log(response.message);
+                Swal.fire({
+                icon:"danger",
+                title: response.message,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Tamam",
+                })
+            }
+            }
+        })
+    });
+
+
+
+    })
+</script>
