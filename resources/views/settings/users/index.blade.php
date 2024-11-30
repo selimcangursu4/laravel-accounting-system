@@ -119,6 +119,7 @@
                   <tr class="fw-semibold fs-6 text-muted">
                     <th>Kullanıcı Kodu</th>
                     <th>Cinsiyet</th>
+                    <th>Durum</th>
                     <th>Kullanıcı Adı</th>
                     <th>İsim Soyisim</th>
                     <th>E-Posta Adresi</th>
@@ -166,25 +167,25 @@
                <div class="col-md-12">
                    <div class="row">
                        <div class="col-md-3 mt-2">
-                           <button type="button" id="smsHelpButton" class="btn btn-warning btn-sm">Destek Hattı</button>
+                           <button type="button" id="smsHelpButton" class="btn btn-secondary btn-sm">Destek Hattı</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                           <button id="smsFaultButton" class="btn btn-warning btn-sm">Arıza Bildirimi</button>
+                           <button id="smsFaultButton" class="btn btn-secondary btn-sm">Arıza Bildirimi</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                        <button id="smsOrderButton" class="btn btn-warning btn-sm">Sipariş Onay</button>
+                        <button id="smsOrderButton" class="btn btn-secondary btn-sm">Sipariş Onay</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                           <button id="smsInvoiceButton" class="btn btn-warning btn-sm">Fatura Gönderimi</button>
+                           <button id="smsInvoiceButton" class="btn btn-secondary btn-sm">Fatura Gönderimi</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                        <button id="smsPaymentButton" class="btn btn-warning btn-sm">Ödeme Hatırlatma</button>
+                        <button id="smsPaymentButton" class="btn btn-secondary btn-sm">Ödeme Hatırlatma</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                           <button id="smsReturnButton" class="btn btn-warning btn-sm">Değişim & İade</button>
+                           <button id="smsReturnButton" class="btn btn-secondary btn-sm">Değişim & İade</button>
                        </div>
                        <div class="col-md-3 mt-2">
-                        <button id="smsAddressButton" class="btn btn-warning btn-sm">Adres Bilgisi</button>
+                        <button id="smsAddressButton" class="btn btn-secondary btn-sm">Adres Bilgisi</button>
                     </div>
                    </div>
                   </div>
@@ -198,20 +199,30 @@
 </div>
 {{-- Spama Ekle Modal --}}
 <div class="modal fade" tabindex="-1" id="kt_modal_2">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">müşteriyi Spama Ekle</h3>
+                <h3 class="modal-title">Müşteriyi Spama Ekle</h3>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+               <form>
+                @csrf
+                <div class="mb-10" style="display: none">
+                    <label for="form-label" class="required form-label">Kullanıcı Id Numarası</label>
+                    <input type="text" id="spam_id" name="spam_id" class="form-control form-control-solid"/>
+                </div>
+                <div class="mb-10">
+                    <label for="form-label" class="required form-label">Açıklama</label>
+                    <textarea class="form-control form-control-solid" id="spamDescription" name="spamDescription" rows="5"></textarea>
+                </div>
+               </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-primary">Spama Ekle</button>
+                <button type="button" id="spamSaveButton" class="btn btn-dark">Spama Ekle</button>
             </div>
         </div>
     </div>
@@ -251,6 +262,15 @@ $(document).ready(function(){
                 return "Kadın";
                }
             } },
+            { data: 'is_active' , render:function(data,type,row){
+                if(row.is_active == 1)
+                {
+                return "Aktif";
+               } else if(row.is_active == 0)
+               {
+                return "Pasif";
+               }
+            }},
             { data: 'username' },
             { data: 'name' },
             { data: 'email' },
@@ -265,9 +285,9 @@ $(document).ready(function(){
              {
                data: 'action',
                render: function(data, type, row) {
-                return `<span class="badge badge-dark">Görüntüle</span>
+                return `<a href="/settings/users/edit/${row.id}"><span class="badge badge-dark">Görüntüle</span></a>
                 <span type="button" class="badge badge-secondary" data-bs-toggle="modal" data-phone="${row.phone}" data-bs-target="#kt_modal_1">Sms Gönder</span>
-                <span type="button" class="badge badge-danger" data-bs-toggle="modal" data-bs-target="#kt_modal_2">Spama Ekle</span>`;
+                <span type="button" class="badge badge-danger" data-id = "${row.id}" data-bs-toggle="modal" data-bs-target="#kt_modal_2">Pasife Al</span>`;
                 }
             }
         ]
@@ -321,9 +341,9 @@ $(document).ready(function(){
     // Sms Gönder Ve Log Kayıt
     $('#sendSmsbutton').click(function(e){
         e.preventDefault();
-        let phone = $('#phone_number').val();
+        let phone   = $('#phone_number').val();
         let message = $('#message').val();
-        let url = "{{ route('send.sms')}}";
+        let url     = "{{ route('send.sms')}}";
         const token = $('meta[name="csrf-token"]').attr('content');
 
         $.ajax({
@@ -366,7 +386,56 @@ $(document).ready(function(){
                   });
             }
         });
+    });
+    // Spama ekle Modal İçerisine Telefon Numarasını Gönderme
+    $('#kt_modal_2').on('show.bs.modal', function (event) {
+      let spamId = $(event.relatedTarget).data('id');
+      $('#spam_id').val(spamId);
+    });
+    // Spama Ekle Post
+    $('#spamSaveButton').click(function(e){
+        e.preventDefault();
+
+        let spamId          = $('#spam_id').val();
+        let spamDescription = $('#spamDescription').val();
+        const token         = $('meta[name="csrf-token"]').attr('content');
+
+
+        $.ajax({
+            type:"POST",
+            url:"{{route('user.spam.create')}}",
+            data:{
+                _token: token,
+                spamId:spamId,
+                spamDescription:spamDescription
+            },
+            success:function(response){
+
+              if(response.success)
+              {
+                console.log(response.message);
+                Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Spam başarıyla eklendi",
+                showConfirmButton: false,
+                timer: 1500
+                });
+              }else{
+                console.log(respons.message);
+                Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Spam başarıyla eklendi",
+                showConfirmButton: false,
+                timer: 1500
+                });
+              }
+            }
+        })
     })
+
+
 
 });
 

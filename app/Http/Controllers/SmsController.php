@@ -30,7 +30,7 @@ class SmsController extends Controller
         $sms = new SmsLog();
         $sms->phone = $request->input('phone');
         $sms->message = $request->input('message');
-        $sms->user_id = Auth::user()->id;
+        $sms->user_id = 1 ; // Auth::user()->id;
         $sms->save();
 
         return response()->json(['success' => true,'message' => 'SMS gönderildi']);

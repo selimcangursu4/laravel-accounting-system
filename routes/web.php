@@ -29,5 +29,8 @@ Route::prefix('/settings')->group(function(){
     Route::post('/update-country', [UserController::class, 'changeCountry'])->name('country.change');
     Route::post('/change-city',[UserController::class, 'changeCity'])->name('city.change');
     Route::post('/users/create',[UserController::class, 'store'])->name('user.store');
+    Route::post('/users/spam/create',[UserController::class, 'spam'])->name('user.spam.create');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/update',[UserController::class, 'update'])->name('users.update');
 
 });

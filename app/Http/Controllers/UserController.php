@@ -6,10 +6,15 @@ use App\Models\Cities;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\District;
+use App\Models\PermissionRole;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserSpam;
+use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -78,6 +83,71 @@ class UserController extends Controller
         }
     }
 
+    public function edit(Request $request,$id)
+    {
+        $roles       = Role::all();
+        $countries   = Country::all();
+        $departments = Department::all();
+        $user        = User::find($id)->first();
+        $cities      = Cities::all();
+        $districts   = District::all();
+
+        return view('settings.users.edit',compact('countries','roles','departments','user','cities','districts'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        if ($user) {
+            $permission_role = PermissionRole::where('user_id', $user->id)->where('role_id', $user->role_id)->first();
+        } else {
+
+            return response()->json([
+               'success' => false,
+               'message' => 'Giriş Yapmadığınız için Bu İşlemi Yapamazsınız!'
+            ]);
+        }
+
+        if($permission_role)
+        {
+            // Kullanıcı Permission Role Güncellemesi
+            $user_permission = PermissionRole::where('user_id', $request->input('user_id'));
+
+            if($user_permission)
+            {
+                $user_permission->update(['role_id' => $request->input('role_id')]);
+            }
+
+            $user                = User::find($request->input('user_id'));
+            $user->name          = $request->input('fullname');
+            $user->username      = $request->input('username');
+            $user->email         = $request->input('email');
+            $user->phone         = $request->input('phone');
+            $user->gender_id     = $request->input('gender_id');
+            $user->date_of_birth = $request->input('birthday');
+            $user->department_id = $request->input('department_id');
+            $user->role_id       = $request->input('role_id');
+            $user->address       = $request->input('address');
+            $user->country_id    = $request->input('country_id');
+            $user->city_id       = $request->input('city_id');
+            $user->district_id   = $request->input('district_id');
+            $user->password      = bcrypt($request->input('password'));
+
+            $user->save();
+
+            return response()->json([
+               'success' => true,
+               'message' => 'Kullanıcı Başarıyla Güncellendi!'
+            ]);
+
+        }else{
+            return response()->json([
+               'success' => false,
+               'message' => 'Bu Kullanıcıyı Düzenlemeye Yetkiniz Yok!'
+            ]);
+        }
+    }
+
     public function fetch(Request $request)
     {
         $query = User::query()
@@ -135,6 +205,33 @@ class UserController extends Controller
         $districts = District::where('sehir_id','=',$request->input('city_id'))->get();
 
         return response()->json($districts);
+    }
+
+    // Kullanıcıyı Spama Ekle
+
+    public function spam(Request $request)
+    {
+        try {
+            $user_id     = $request->input('spamId');
+            $description = $request->input('spamDescription');
+
+
+            $user = User::find($user_id)->update(['is_active' => 0]);
+
+            if ($user) {
+                $spam               = new UserSpam();
+                $spam->user_id     =  $user_id;
+                $spam->description =  $description;
+                $spamSave          =  $spam->save();
+
+                if ($spamSave)
+                    return response()->json(['success' => true, 'message' => 'Kullanıcı Spam Edildi!']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Kullanıcı Bulunamadı!']);
+            }
+        } catch (Exception $th) {
+            return response()->json(['success' => false, 'message' => 'Bir hata oluştu!']);
+        }
     }
 
 }
