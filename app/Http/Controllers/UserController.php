@@ -15,7 +15,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('settings.users.index');
+        $roles       = Role::all();
+        $departments = Department::all();
+        return view('settings.users.index', compact('roles','departments'));
     }
 
     public function create()
@@ -74,15 +76,16 @@ class UserController extends Controller
                 'message' => 'Eksik Bilgi Lütfen Tüm Alanları Doldurunuz !'
             ]);
         }
-
-
-
-
     }
 
     public function fetch(Request $request)
     {
-        $query = User::query();
+        $query = User::query()
+        ->join('departments', 'departments.id', '=', 'users.department_id')
+        ->join('roles', 'roles.id', '=', 'users.role_id')
+        ->select('users.*', 'departments.name as department_name','roles.name as role_name')
+        ->get();
+
 
         if($request->filled('search_user_id')) {
             $query->where('id', $request->input('search_user_id'));

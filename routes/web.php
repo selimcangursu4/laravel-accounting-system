@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[LoginController::class, 'index'])->name('login');
 Route::post('/login/post',[LoginController::class, 'login'])->name('login.post');
 Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-
+Route::post('send/sms',[SmsController::class,'singleSms'])->name('send.sms');
 
 Route::prefix('/sales')->group(function(){
 
