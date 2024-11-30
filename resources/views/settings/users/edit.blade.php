@@ -253,18 +253,39 @@
             {
                 if(response.success)
                 {
-                    alert(response.message);
+                    console.log(response.message);
+                    Swal.fire({
+                    title: response.message,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Tamam",
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                     window.location.href = "{{route('users.index')}}";
+                      }
+                    });
                 }else{
-                    alert(response.message);
+                    console.log(response.message);
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: response.message,
+                    confirmButtonText: "Tamam",
+                    });
                 }
 
             },
             error:function(jqXHR, textStatus, errorThrown)
             {
-                alert("Error: " + errorThrown);
+                console.log("Error: " + errorThrown);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: errorThrown,
+                    confirmButtonText: "Tamam",
+                    });
             }
         })
-
     })
 
 
