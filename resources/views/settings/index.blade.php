@@ -39,6 +39,10 @@
                                 </li>
                                 <br>
                                 <li>
+                                    <a href="" class="text-dark">Rol İzinleri</a>
+                                </li>
+                                <br>
+                                <li>
                                     <a href="{{route('user.view')}}" class="text-dark">Kullanıcı İşlemleri</a>
                                 </li>
                             </ul>

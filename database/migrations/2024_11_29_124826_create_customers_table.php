@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('alternative_phone');
             $table->string('email');
-            $table->string('website');
-            $table->string('current_code');
+            $table->string('tckn');
             $table->integer('country_id');
             $table->integer('city_id');
             $table->integer('district_id');
@@ -30,7 +29,7 @@ return new class extends Migration
             $table->string('tax_number');
             $table->string('iban');
             $table->integer('marketing_consent')->default(1);
-            $table->integer('status_id');
+            $table->integer('status_id')->default(1);
             $table->integer('user_id');
             $table->timestamps();
         });

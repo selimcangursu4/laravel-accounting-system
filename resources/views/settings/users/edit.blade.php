@@ -23,9 +23,9 @@
             </div>
             <div class="d-flex align-items-center gap-3 gap-lg-5">
                 <div class="m-0">
-                    <a href="{{route('user.view')}}" class="btn btn-flex btn-sm btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
+                    <a href="{{route('user.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
                 </div>
-                <button type="button" id="save" class="btn btn-flex btn-center btn-dark btn-sm px-4"><i class="fa-solid fa-floppy-disk"></i> Güncelle</button>
+                <button type="button" id="save" class="btn btn-flex btn-center btn-dark px-4"><i class="fa-solid fa-floppy-disk"></i> Güncelle</button>
             </div>
         </div>
         <div class="card shadow-sm mt-7">
@@ -261,7 +261,7 @@
                     confirmButtonText: "Tamam",
                     }).then((result) => {
                     if (result.isConfirmed) {
-                     window.location.href = "{{route('users.index')}}";
+                     window.location.href = "{{route('user.view')}}";
                       }
                     });
                 }else{

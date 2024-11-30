@@ -23,9 +23,9 @@
             </div>
             <div class="d-flex align-items-center gap-3 gap-lg-5">
                 <div class="m-0">
-                    <a href="{{route('settings.index')}}" class="btn btn-flex btn-sm btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
+                    <a href="{{route('settings.index')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
                 </div>
-                <a href="{{route('user.create')}}" id="save" class="btn btn-flex btn-center btn-dark btn-sm px-4"><i class="fa-solid fa-floppy-disk"></i> Yeni Kullanıcı Oluştur</a>
+                <a href="{{route('user.create')}}" id="save" class="btn btn-flex btn-center btn-dark px-4"><i class="fa-solid fa-floppy-disk"></i> Yeni Kullanıcı Oluştur</a>
             </div>
         </div>
       <div class="card shadow-sm mt-10">

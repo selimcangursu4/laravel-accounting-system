@@ -1,12 +1,34 @@
 @extends('partials.master')
 @section('content')
 <div class="d-flex flex-column flex-column-fluid">
-    <div class="col-md-12 mt-5">
-      <a href="" class="btn btn-primary float-end" type="button">
-        <i class="fa-solid fa-floppy-disk fs-2"></i> Yeni Müşteri Oluştur </a>
-    </div>
     <div id="kt_app_content" class="app-content pb-0">
-      <div class="card shadow-sm">
+        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+            <div class="page-title d-flex flex-column gap-3 me-3">
+                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Tüm Müşteriler</h1>
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                        <a href="../dist/index.html" class="text-gray-500">
+                            <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                    </li>
+                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Satış Yönetimi</li>
+                    <li class="breadcrumb-item">
+                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                    </li>
+                    <li class="breadcrumb-item text-gray-500">Müşteriler</li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-3 gap-lg-5">
+                <div class="m-0">
+                    <a href="{{route('user.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4"><i class="fa-solid fa-rotate-left"></i> Geri Dön</a>
+                </div>
+                <a href="{{route('customer.create')}}" class="btn btn-flex btn-center btn-dark px-4"><i class="fa-solid fa-floppy-disk"></i> Yeni Müşteri Ekle</a>
+            </div>
+        </div>
+      <div class="card shadow-sm mt-7">
         <div class="card-header">
           <h3 class="card-title">
             <i class="fa-solid fa-filter fs-2 me-1"></i> Müşteri Filtrele
@@ -89,44 +111,13 @@
                   <th>Müşteri Tipi</th>
                   <th>Müşteri Adı</th>
                   <th>Telefon Numarası</th>
+                  <th>Alternatif Telefon Numarası</th>
                   <th>E-Posta</th>
                   <th>Oluşturma Tarihi</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody class="fs-7">
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <span class="badge badge-warning">Bireysel Müşteri</span>
-                  </td>
-                  <td>Selimcan Gürsu - <span class="badge badge-success">Aktif</span>
-                  </td>
-                  <td>05550162190</td>
-                  <td>selimcangursu@yandex.com</td>
-                  <td>2011/04/25 14/12/2024 13:45</td>
-                  <td class="text-center">
-                    <span class="badge badge-primary">Görüntüle</span>
-                    <span class="badge badge-secondary">Sms Gönder</span>
-                    <span class="badge badge-danger">Spama Ekle</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>
-                    <span class="badge badge-info">Kurumsal Müşteri</span>
-                  </td>
-                  <td>Selimcan Gürsu - <span class="badge badge-success">Aktif</span>
-                  </td>
-                  <td>05550162190</td>
-                  <td>selimcangursu@yandex.com</td>
-                  <td>2011/04/25 14/12/2024 13:45</td>
-                  <td class="text-center">
-                    <span class="badge badge-primary">Görüntüle</span>
-                    <span class="badge badge-secondary">Sms Gönder</span>
-                    <span class="badge badge-danger">Spama Ekle</span>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -139,7 +130,81 @@
 @endsection
 @include('partials.script')
 <script>
-    $(document).ready(function(){
-        $("#kt_datatable_zero_configuration").DataTable();
+    $(document).ready(function() {
+      let table = $("#kt_datatable_zero_configuration").DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: "{{ route('customer.fetch') }}",
+                type: "POST",
+                data: function(d) {
+                    d._token = "{{ csrf_token() }}";
+                    d.search_customer_code = $('#search-customer-code').val();
+                    d.search_customer_type_id = $('#search-customer-type-id').val();
+                    d.search_customer_fullname = $('#search-customer-fullname').val();
+                    d.search_customer_phone = $('#search-customer-phone').val();
+                    d.search_customer_alternavite_phone = $('#search-customer-alternavite_phone').val();
+                    d.search_customer_email = $('#search-customer-email').val();
+                    d.search_customer_fax_number = $('#search-fax-number').val();
+                    d.search_customer_created_date = $('#search-customer-created-date').val();
+                    d.search_customer_end_date = $('#search-customer-end-date').val();
+                }
+            },
+            columns: [{
+                    data: 'id'
+                },
+                {
+                    data: 'customer_type_id',
+                    render: function(data, type, row) {
+                        if (row.customer_type_id == 1) {
+                            return '<span class="badge badge-warning">Bireysel Müşteri</span>';
+
+                        } else if (row.customer_type_id == 2) {
+
+                            return '<span class="badge badge-info">Kurumsal Müşteri</span>';
+                        }
+                    }
+                },
+                {
+                    data: 'name',
+                    render: function(data, type, row) {
+                        if (row.status_id == 1) {
+                            return `${row.name} - <span class="badge badge-success">Aktif</span> `;
+                        } else if (row.status_id == 2) {
+                            return `${row.name} - <span class="badge badge-danger">Pasif</span> `;
+                        }
+                    }
+                },
+                {
+                    data: 'phone'
+                },
+                {
+                    data: 'alternative_phone'
+                },
+                {
+                    data: 'email'
+                },
+                {
+                    data: 'created_at',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD/MM/YYYY HH:mm:ss');
+                    }
+                },
+                {
+                    data: 'action',
+                    render: function(data, type, row) {
+                        return `<span class="badge badge-primary">Görüntüle</span>
+                        <span class="badge badge-secondary">Sms Gönder</span>
+                        <span class="badge badge-danger">Spama Ekle</span>`;
+                    }
+                }
+            ]
+        });
+
+        $('#filterButton').click(function(e) {
+            e.preventDefault();
+            table.draw();
+        });
+
     })
 </script>

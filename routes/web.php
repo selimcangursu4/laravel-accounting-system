@@ -17,7 +17,8 @@ Route::post('send/sms',[SmsController::class,'singleSms'])->name('send.sms');
 Route::prefix('/sales')->group(function(){
 
     Route::get('/customers/view',[CustomerController::class,'index'])->name('customer.view');
-
+    Route::post('/customers/fetch',[CustomerController::class,'fetch'])->name('customer.fetch');
+    Route::get('/customers/create',[CustomerController::class,'create'])->name('customer.create');
 });
 
 
