@@ -33,7 +33,7 @@
               <a href="{{route('customer.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4">
                 <i class="fa-solid fa-rotate-left"></i> Geri Dön </a>
             </div>
-            <a type="button" id="save" class="btn btn-flex btn-center btn-success px-4">
+            <a type="button" id="save" class="btn btn-flex btn-center btn-primary px-4">
               <i class="fa-solid fa-floppy-disk"></i> Excele İndir </a>
           </div>
       </div>
@@ -50,7 +50,9 @@
               </div>
               <div class="d-flex flex-stack fs-4 py-3">
                 <div class="fw-bold"> Müşteri Profili </div>
-                <button type="button" class="btn btn-sm btn-success"> Güncelle </button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                    Güncelle
+                </button>
               </div>
               <div class="separator separator-dashed my-3"></div>
               <div class="pb-5 fs-6">
@@ -89,7 +91,9 @@
             <div class="card-header">
               <h3 class="card-title">Adres Bilgisi</h3>
               <div class="card-toolbar">
-                <button type="button" class="btn btn-sm btn-success"> Güncelle </button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_2">
+                    Güncelle
+                </button>
               </div>
             </div>
             <div class="card-body">
@@ -178,7 +182,9 @@
             <div class="card-header">
               <h3 class="card-title">Diğer Bilgiler</h3>
               <div class="card-toolbar">
-                <button type="button" class="btn btn-sm btn-success"> Güncelle </button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_3">
+                    Güncelle
+                </button>
               </div>
             </div>
             <div class="card-body">
@@ -206,7 +212,9 @@
             <div class="card-header">
               <h3 class="card-title">Firma Temsilcisi</h3>
               <div class="card-toolbar">
-                <button type="button" class="btn btn-sm btn-success"> Güncelle </button>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_4">
+                    Güncelle
+                </button>
               </div>
             </div>
             <div class="card-body">
@@ -234,11 +242,224 @@
       </div>
     </div>
   </div>
+  {{-- Profil Detay Modal --}}
+  <div class="modal fade" tabindex="-1" id="kt_modal_1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Müşteri Profilini Güncelle</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+            </div>
+            <div class="modal-body">
+               <form>
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-10" style="display: none">
+                            <label for="form-label" class="required form-label">Müşteri Id</label>
+                            <input type="text" class="form-control form-control-solid" id="profile_id" name="profile_id" value="{{$customer->id}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Müşteri Adı</label>
+                            <input type="text" class="form-control form-control-solid" id="name" name="name" value="{{$customer->name}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">E-Posta Adresi</label>
+                            <input type="email" class="form-control form-control-solid" id="email" name="email" value="{{$customer->email}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Müşteri Tipi</label>
+                            <select class="form-select form-select-solid" data-control="select2" id="customer_type_id" name="customer_type_id" data-placeholder="Seçiniz">
+                                <option></option>
+                                <option value="1" {{$customer->customer_type_id == 1 ? 'selected' : ''}}>Bireysel Müşteri</option>
+                                <option value="2" {{$customer->customer_type_id == 2 ? 'selected' : ''}}>Kurumsal Müşteri</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Telefon Numarası</label>
+                            <input type="text" class="form-control form-control-solid" id="phone" name="phone" value="{{$customer->phone}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Alternatif Cep Telefonu</label>
+                            <input type="text" class="form-control form-control-solid" id="alternative_phone" name="alternative_phone" value="{{$customer->alternative_phone}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Tc Kimlik Numarası</label>
+                            <input type="email" class="form-control form-control-solid" id="tckn" name="tckn" value="{{$customer->tckn}}"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-10">
+                            <label for="form-label" class="required form-label">Durum</label>
+                            <select class="form-select form-select-solid" data-control="select2" id="status_id" name="status_id" data-placeholder="Seçiniz">
+                                <option></option>
+                                <option value="1" {{$customer->status_id == 1 ? 'selected' : ''}}>Aktif</option>
+                                <option value="0" {{$customer->status_id == 0 ? 'selected' : ''}}>Pasif</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                 <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" id="customerProfileUpdateButton" class="btn btn-primary">Güncelle</button>
+                 </div>
+               </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Adres Bilgisi Modal --}}
+<div class="modal fade" tabindex="-1" id="kt_modal_2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Modal title</h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Diğer Bilgiler Modal --}}
+<div class="modal fade" tabindex="-1" id="kt_modal_3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Modal title</h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Firma Temsilcisi Modal --}}
+<div class="modal fade" tabindex="-1" id="kt_modal_4">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Modal title</h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @include('partials.script')
 <script>
     $(document).ready(function(){
         $("#kt_datatable_zero_configuration").DataTable();
+
+        // Profil Bilgisi Güncelle
+        $('#customerProfileUpdateButton').click(function(e){
+            e.preventDefault();
+
+            let profile_id        = $('#profile_id').val();
+            let name              = $('#name').val();
+            let email             = $('#email').val();
+            let customer_type_id  = $('#customer_type_id').val();
+            let phone             = $('#phone').val();
+            let alternative_phone = $('#alternative_phone').val();
+            let tckn              = $('#ckn').val();
+            let status_id         = $('#status_id').val();
+
+            $.ajax({
+                type:"POST",
+                url:"{{route('customer.profile.update')}}",
+                data:{
+                    profile_id:profile_id,
+                    name:name,
+                    email:email,
+                    customer_type_id:customer_type_id,
+                    phone:phone,
+                    alternative_phone:alternative_phone,
+                    tckn:tckn,
+                    status_id:status_id,
+                    _token: '{{csrf_token()}}',
+                },
+                success:function(response){
+                 if(response.success)
+                  {
+                    console.log(response.message);
+                    Swal.fire({
+                    icon : "success",
+                    title: response.message,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Tamam",
+                   }).then((result) => {
+                   if (result.isConfirmed) {
+                    window.location.reload();
+                    }
+                   });
+                  }else{
+                    console.log(response.message);
+                    Swal.fire({
+                    icon : "error",
+                    title: response.message,
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: "Tamam",
+                   });
+                  }
+                }
+            })
+        })
+
+        // Adres Bilgisi Güncelle
 
 
     })

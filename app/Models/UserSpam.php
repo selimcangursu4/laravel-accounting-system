@@ -9,4 +9,6 @@ class UserSpam extends Model
     protected $table = 'users_spam';
 
     public $timestamps = true;
+
+    protected $guarded = [];
 }

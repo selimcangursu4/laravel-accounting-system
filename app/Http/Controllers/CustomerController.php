@@ -217,4 +217,34 @@ class CustomerController extends Controller
         }
     }
 
+    // Müşteri Profil Bilgisi Güncelle
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $profile = Customer::find($request->input('profile_id'));
+
+            if (!$profile) {
+                return response()->json(['success' => false, 'message' => 'Müşteri Bulunamadı']);
+            }
+
+            $profile->update([
+                'name'              => $request->input('name'),
+                'email'             => $request->input('email'),
+                'customer_type_id'  => $request->input('customer_type_id'),
+                'phone'             => $request->input('phone'),
+                'alternative_phone' => $request->input('alternative_phone'),
+                'tckn'              => $request->input('tckn'),
+                'status_id'         => $request->input('status_id'),
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Profil Bilgileri Güncellendi!']);
+
+        } catch (Exception $th) {
+            return response()->json(['success' => false, 'message' => 'Bilinmeyen Bir Hata !']);
+        }
+    }
+
+
+
 }

@@ -26,6 +26,7 @@ Route::prefix('/sales')->middleware('auth')->group(function(){
     Route::post('/customers/store',[CustomerController::class, 'store'])->name('customer.store');
     Route::post('/customers/spam/create',[CustomerController::class, 'spam'])->name('customer.spam.create');
     Route::get('/customers/edit/{id}',[CustomerController::class, 'edit'])->name('customer.edit');
+    Route::post('/customers/profile/update',[CustomerController::class, 'updateProfile'])->name('customer.profile.update');
 
 });
 

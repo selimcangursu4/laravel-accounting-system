@@ -8,8 +8,5 @@ class Customer extends Model
 {
     protected $table = 'customers';
 
-    protected $fillable = [
-        'status_id',
-        'marketing_consent',
-    ];
+    protected $guarded = [];
 }
