@@ -257,7 +257,7 @@
                     render: function(data, type, row) {
                         if (row.status_id == 1) {
                             return `${row.name} - <span class="badge badge-success">Aktif</span> `;
-                        } else if (row.status_id == 2) {
+                        } else if (row.status_id == 0) {
                             return `${row.name} - <span class="badge badge-danger">Pasif</span> `;
                         }
                     }
@@ -280,7 +280,7 @@
                 {
                     data: 'action',
                     render: function(data, type, row) {
-                        return `<span class="badge badge-primary">Görüntüle</span>
+                        return `<a href="/sales/customers/edit/${row.id}" type="button"><span class="badge badge-primary">Görüntüle</span></a>
                         <span type="button" class="badge badge-secondary" data-bs-toggle="modal" data-phone="${row.phone}" data-bs-target="#kt_modal_1">Sms Gönder</span>
                         <span type="button" class="badge badge-danger" data-id = "${row.id}" data-bs-toggle="modal" data-bs-target="#kt_modal_2">Spama Ekle</span>`;
                     }

@@ -27,6 +27,27 @@ class CustomerController extends Controller
         return view('sales.customers.create',compact('countries'));
     }
 
+    public function edit(Request $request,$id)
+    {
+        $countries = Country::all();
+
+        $balances = Balances::join('users','users.id','=','balances.user_id')
+        ->select('balances.*','users.name as user_name')
+        ->where('customer_id','=',$id)->get();
+
+        $representative = CompanyRepresentative::where('customer_id','=',$id)->first();
+
+        $customer = Customer::join('ulkeler', 'ulkeler.id', '=', 'customers.country_id')
+        ->join('sehirler','sehirler.id','=','customers.city_id')
+        ->join('ilceler','ilceler.id','=','customers.district_id')
+        ->join('balances','balances.customer_id','=','customers.id')
+        ->where('customers.id', $id)
+        ->select('customers.*', 'ulkeler.baslik as country_name','sehirler.baslik as city_name','ilceler.baslik as district_name','balances.amount as balances_amount')
+        ->first();
+
+        return view('sales.customers.edit',compact('countries','customer','balances','representative'));
+    }
+
     public function store(Request $request)
     {
         try {
@@ -48,7 +69,7 @@ class CustomerController extends Controller
             $customer->tax_number        = $request->input('tax_number');
             $customer->iban              = $request->input('iban');
             $customer->marketing_consent = $request->input('marketing_consent_id');
-            $customer->user_id           = 1; // Auth::user()->id;
+            $customer->user_id           = Auth::user()->id;
 
             // Müşteri kaydını kaydet
             if (!$customer->save()) {
