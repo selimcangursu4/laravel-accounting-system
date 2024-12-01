@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,4 +47,13 @@ Route::prefix('/settings')->middleware('auth')->group(function(){
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/update',[UserController::class, 'update'])->name('users.update');
 
+});
+
+Route::prefix('/stock')->middleware('auth')->group(function(){
+
+    Route::get('/warehouse/view',[WarehouseController::class,'index'])->name('warehouse.view');
+    Route::get('/warehouse/create',[WarehouseController::class,'create'])->name('warehouse.create');
+    Route::post('/update-country', [WarehouseController::class, 'changeCountry'])->name('warehouse.country.change');
+    Route::post('/change-city',[WarehouseController::class, 'changeCity'])->name('warehouse.city.change');
+    Route::post('/warehouse/update',[WarehouseController::class, 'store'])->name('warehouse.store');
 });
