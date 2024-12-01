@@ -30,6 +30,8 @@ class CustomerController extends Controller
     public function edit(Request $request,$id)
     {
         $countries = Country::all();
+        $cities    = Cities::all();
+        $districts = District::all();
 
         $balances = Balances::join('users','users.id','=','balances.user_id')
         ->select('balances.*','users.name as user_name')
@@ -45,7 +47,7 @@ class CustomerController extends Controller
         ->select('customers.*', 'ulkeler.baslik as country_name','sehirler.baslik as city_name','ilceler.baslik as district_name','balances.amount as balances_amount')
         ->first();
 
-        return view('sales.customers.edit',compact('countries','customer','balances','representative'));
+        return view('sales.customers.edit',compact('countries','customer','balances','representative','cities','districts'));
     }
 
     public function store(Request $request)
@@ -245,6 +247,33 @@ class CustomerController extends Controller
         }
     }
 
+    // Müşteri Adres Bilgilerini Güncelle
+    public function updateAddress(Request $request)
+    {
+        try {
 
+            $customer = Customer::find($request->input('address_id'));
+
+            if(!$customer)
+            {
+                return response()->json(['success' => false, 'message' => 'Müşteri Bulunamadı']);
+            }
+
+            $customer->update([
+                'country_id'        => $request->input('country_id'),
+                'city_id'           => $request->input('city_id'),
+                'district_id'       => $request->input('district_id'),
+                'postal_code'       => $request->input('postal_code'),
+                'address'           => $request->input('address'),
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Adres Bilgileri Güncellendi!']);
+
+        } catch (Exception $th) {
+
+            return response()->json(['success' => false, 'message' => 'Bilinmeyen Bir Hata!']);
+
+        }
+    }
 
 }

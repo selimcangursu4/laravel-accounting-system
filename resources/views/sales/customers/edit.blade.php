@@ -324,25 +324,71 @@
 </div>
 {{-- Adres Bilgisi Modal --}}
 <div class="modal fade" tabindex="-1" id="kt_modal_2">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Modal title</h3>
-
-                <!--begin::Close-->
+                <h3 class="modal-title">Adres Bilgisi Güncelle</h3>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
-                <!--end::Close-->
             </div>
-
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">Müşteri Id</label>
+                                <input type="text" class="form-control form-control-solid" id="address_id" name="address_id" value="{{$customer->id}}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">Ülke</label>
+                                <select class="form-select form-select-solid" id="country_id" name="country_id" data-control="select2" data-placeholder="Seçiniz...">
+                                    @foreach ($countries as $country )
+                                    <option value="{{$country->id}}" {{$customer->country_id == $country->id ? 'selected' : ''}} >{{$country->baslik}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">Şehir</label>
+                                <select class="form-select form-select-solid" id="city_id" name="city_id" data-control="select2" data-placeholder="Seçiniz..">
+                                    @foreach ($cities as $city )
+                                    <option value="{{$city->id}}" {{$customer->city_id == $city->id ? 'selected' : ''}}>{{$city->baslik}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">İlçe</label>
+                                <select class="form-select form-select-solid" id="district_id" name="district_id" data-control="select2" data-placeholder="Select an option">
+                                    @foreach ($districts as $district )
+                                    <option value="{{$district->id}}" {{$customer->district_id == $district->id ? 'selected' : ''}}>{{$district->baslik}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">Posta Kodu</label>
+                                <input type="text" class="form-control form-control-solid" id="postal_code" name="postal_code" value="{{$customer->postal_code}}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-10">
+                                <label for="form-label" class="required form-label">Adres</label>
+                                <textarea class="form-control form-control-solid" id="address" name="address" rows="3">{{$customer->address}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                        <button type="button" id="customerAddressUpdateButton" class="btn btn-primary">Güncelle</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -460,7 +506,55 @@
         })
 
         // Adres Bilgisi Güncelle
+        $('#customerAddressUpdateButton').click(function(e){
+            e.preventDefault();
 
+            let address_id  = $('#address_id').val();
+            let country_id  = $('#country_id').val();
+            let city_id     = $('#city_id').val();
+            let district_id = $('#district_id').val();
+            let postal_code = $('#postal_code').val();
+            let address     = $('#address').val();
+
+            $.ajax({
+                type:"POST",
+                url:"{{route('customer.address.update')}}",
+                data:{
+                    address_id:address_id,
+                    country_id:country_id,
+                    city_id:city_id,
+                    district_id:district_id,
+                    postal_code:postal_code,
+                    address:address,
+                    _token: '{{csrf_token()}}',
+                },
+                success:function(response){
+                if(response.success)
+                {
+                    console.log(response.message);
+                    Swal.fire({
+                    title: response.message,
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Tamam",
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                     window.location.reload();
+                    }
+                    });
+                }else{
+                    console.log(response.message);
+                    Swal.fire({
+                    icon : "error",
+                    title: response.message,
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    confirmButtonText: "Tamam",
+                   });
+                }
+              }
+            })
+        })
 
     })
 </script>
