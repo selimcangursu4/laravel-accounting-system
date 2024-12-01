@@ -7,6 +7,7 @@ use App\Models\Cities;
 use App\Models\CompanyRepresentative;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\CustomerSpam;
 use App\Models\District;
 use App\Models\User;
 use Exception;
@@ -166,6 +167,33 @@ class CustomerController extends Controller
         $districts = District::where('sehir_id','=',$request->input('city_id'))->get();
 
         return response()->json($districts);
+    }
+
+    // Müşteriyi Spama Ekle
+    public function spam(Request $request)
+    {
+        try {
+            $customer_id     = $request->input('spamId');
+            $description     = $request->input('spamDescription');
+
+            // Müşterinin Durumunu Güncelle
+            Customer::find($customer_id)->update(['status_id' => 0]);
+
+            // Müşteri Spamanına Ekle
+            $spam               = new CustomerSpam();
+            $spam->customer_id  =  $customer_id;
+            $spam->description  =  $description;
+            $spamSave           =  $spam->save();
+
+            if ($spamSave) {
+                return response()->json(['success' => true, 'message' => 'Müşteri Spam Edildi!']);
+            }
+
+        } catch (Exception $th) {
+
+            return response()->json(['success' => false, 'message' => $th]);
+
+        }
     }
 
 }

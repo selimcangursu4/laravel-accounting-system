@@ -363,32 +363,33 @@
        // Müşteriyi Kaydet
 
        $('#save').click(function(e) {
+
            e.preventDefault();
-           const token = $('meta[name="csrf-token"]').attr('content');
-           const customer_type_id = $('#customer_type_id').val();
-           const fullname = $('#fullname').val();
-           const phone = $('#phone').val();
-           const alternative_phone = $('#alternative_phone').val();
-           const email = $('#email').val();
-           const fax_number = $('#fax_number').val();
+           const token                = $('meta[name="csrf-token"]').attr('content');
+           const customer_type_id     = $('#customer_type_id').val();
+           const fullname             = $('#fullname').val();
+           const phone                = $('#phone').val();
+           const alternative_phone    = $('#alternative_phone').val();
+           const email                = $('#email').val();
+           const fax_number           = $('#fax_number').val();
            const marketing_consent_id = $('marketing_consent_id').val();
-           const country_id = $('country_id').val();
-           const city_id = $('#city_id').val();
-           const district_id = $('#district_id').val();
-           const address = $('#address').val();
-           const postal_code = $('#postal_code').val();
-           const iban = $('#iban').val();
-           const tax_office = $('#tax_office').val();
-           const tax_number = $('#tax_number').val();
-           const tckn = $('#tckn').val();
-           const representative_name = $('#representative_name').val();
+           const country_id           = $('country_id').val();
+           const city_id              = $('#city_id').val();
+           const district_id          = $('#district_id').val();
+           const address              = $('#address').val();
+           const postal_code          = $('#postal_code').val();
+           const iban                 = $('#iban').val();
+           const tax_office           = $('#tax_office').val();
+           const tax_number           = $('#tax_number').val();
+           const tckn                 = $('#tckn').val();
+           const representative_name  = $('#representative_name').val();
            const representative_phone = $('#representative_phone').val();
            const representative_email = $('#representative_email').val();
-           const representative_note = $('#representative_note').val();
-           const current_name = $('#current_name').val();
-           const current_date = $('#current_date').val();
-           const current_amount = $('#current_amount').val();
-           const current_status_id = $('#current_status_id').val();
+           const representative_note  = $('#representative_note').val();
+           const current_name         = $('#current_name').val();
+           const current_date         = $('#current_date').val();
+           const current_amount       = $('#current_amount').val();
+           const current_status_id    = $('#current_status_id').val();
 
            $.ajax({
                type: "POST",
