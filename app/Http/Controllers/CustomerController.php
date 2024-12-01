@@ -29,16 +29,12 @@ class CustomerController extends Controller
 
     public function edit(Request $request,$id)
     {
-        $countries = Country::all();
         $cities    = Cities::all();
+        $countries = Country::all();
         $districts = District::all();
-
         $balances = Balances::join('users','users.id','=','balances.user_id')
         ->select('balances.*','users.name as user_name')
         ->where('customer_id','=',$id)->get();
-
-        $representative = CompanyRepresentative::where('customer_id','=',$id)->first();
-
         $customer = Customer::join('ulkeler', 'ulkeler.id', '=', 'customers.country_id')
         ->join('sehirler','sehirler.id','=','customers.city_id')
         ->join('ilceler','ilceler.id','=','customers.district_id')
@@ -46,6 +42,7 @@ class CustomerController extends Controller
         ->where('customers.id', $id)
         ->select('customers.*', 'ulkeler.baslik as country_name','sehirler.baslik as city_name','ilceler.baslik as district_name','balances.amount as balances_amount')
         ->first();
+        $representative = CompanyRepresentative::where('customer_id','=',$id)->first();
 
         return view('sales.customers.edit',compact('countries','customer','balances','representative','cities','districts'));
     }
@@ -106,7 +103,7 @@ class CustomerController extends Controller
                 $balances->transaction_date = $request->input('current_date');
                 $balances->amount           = $request->input('current_amount');
                 $balances->status_id        = $request->input('current_status_id');
-                $balances->user_id          = 1;
+                $balances->user_id          = Auth::user()->id;
 
                 // Bakiye kaydını kaydet
                 if (!$balances->save()) {
@@ -275,5 +272,62 @@ class CustomerController extends Controller
 
         }
     }
+
+    // Müşteri Diğer Bilgileri Güncelle
+    public function updateOrderInfo(Request $request)
+    {
+        try {
+            $customer = Customer::find($request->input('orderInfo_id'));
+
+            if(!$customer)
+            {
+                return response()->json(['success' => false, 'message' => 'Müşteri Bulunamadı']);
+            }
+
+            $customer->update([
+
+                'tax_number'         => $request->input('tax_number'),
+                'tax_office'         => $request->input('tax_office'),
+                'fax_number'         => $request->input('fax_number'),
+                'iban'               => $request->input('iban'),
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Müşteri Bilgileri Güncellendi!']);
+
+        } catch (Exception $th) {
+
+            return response()->json(['success' => false, 'message' => 'Bilinmeyen Bir Hata!']);
+
+        }
+    }
+
+    public function updateRepresentative(Request $request)
+    {
+
+        try {
+            $representative = CompanyRepresentative::where('customer_id', $request->input('representative_id'));
+
+            if(!$representative)
+            {
+                return response()->json(['success' => false, 'message' => 'Müşteri Bulunamadı']);
+            }
+
+            $representative->update([
+                'name'    => $request->input('representative_name'),
+                'email'   => $request->input('representative_email'),
+                'phone'   => $request->input('representative_phone'),
+                'note'    => $request->input('representative_note'),
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Müşteri Yetkilisi Güncellendi!']);
+
+        } catch (Exception $th) {
+
+            return response()->json(['success' => false, 'message' => 'Bilinmeyen Bir Hata!']);
+
+        }
+
+    }
+
 
 }

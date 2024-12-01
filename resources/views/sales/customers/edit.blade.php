@@ -393,52 +393,86 @@
         </div>
     </div>
 </div>
-{{-- Diğer Bilgiler Modal --}}
+{{-- Firma Temsilcisi Modal --}}
 <div class="modal fade" tabindex="-1" id="kt_modal_3">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Modal title</h3>
-
-                <!--begin::Close-->
+                <h3 class="modal-title">Firma Temsilcisi Düzenle</h3>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
-                <!--end::Close-->
             </div>
-
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <form>
+                    @csrf
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Müşteri Id</label>
+                        <input type="text" class="form-control form-control-solid" id="orderInfo_id" name="orderInfo_id" value="{{$customer->id}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Vergi Numarası</label>
+                        <input type="text" class="form-control form-control-solid" id="tax_number" name="tax_number" value="{{$customer->tax_number}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Vergi Dairesi</label>
+                        <input type="text" class="form-control form-control-solid" id="tax_office" name="tax_office" value="{{$customer->tax_office}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Faks Numarası</label>
+                        <input type="text" class="form-control form-control-solid" id="fax_number" name="fax_number" value="{{$customer->fax_number}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">IBAN Numarası</label>
+                        <input type="text" class="form-control form-control-solid" id="iban" name="iban" value="{{$customer->iban}}"/>
+                    </div>
+                </form>
             </div>
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" id="customerOrderInfoButton" class="btn btn-primary">Güncelle</button>
             </div>
         </div>
     </div>
 </div>
-{{-- Firma Temsilcisi Modal --}}
+{{-- Diğer Bilgiler Modal --}}
 <div class="modal fade" tabindex="-1" id="kt_modal_4">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Modal title</h3>
-
-                <!--begin::Close-->
+                <h3 class="modal-title">Müşteri Temsilcisi Bilgisini Güncelle</h3>
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
-                <!--end::Close-->
             </div>
-
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <form>
+                    @csrf
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Müşteri Id</label>
+                        <input type="text" class="form-control form-control-solid" id="representative_id" name="representative_id" value="{{$representative->customer_id}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Temsilci Adı</label>
+                        <input type="text" class="form-control form-control-solid" id="representative_name" name="representative_name" value="{{$representative->name}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Temsilci E-Posta</label>
+                        <input type="text" class="form-control form-control-solid" id="representative_email" name="representative_email" value="{{$representative->email}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Temsilci Telefon Numarası</label>
+                        <input type="text" class="form-control form-control-solid" id="representative_phone" name="representative_phone" value="{{$representative->phone}}"/>
+                    </div>
+                    <div class="mb-10">
+                        <label for="form-label" class="required form-label">Temsilci Notu</label>
+                        <input type="text" class="form-control form-control-solid" id="representative_note" name="representative_note" value="{{$representative->note}}"/>
+                    </div>
+                </form>
             </div>
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" id="representativeUpdateButton" class="btn btn-primary">Güncelle</button>
             </div>
         </div>
     </div>
@@ -446,114 +480,234 @@
 @endsection
 @include('partials.script')
 <script>
-    $(document).ready(function(){
-        $("#kt_datatable_zero_configuration").DataTable();
+      $(document).ready(function() {
+    	$("#kt_datatable_zero_configuration").DataTable();
 
-        // Profil Bilgisi Güncelle
-        $('#customerProfileUpdateButton').click(function(e){
+    	// Profil Bilgisi Güncelle
+    	$('#customerProfileUpdateButton').click(function(e) {
+    		e.preventDefault();
+
+    		let profile_id = $('#profile_id').val();
+    		let name = $('#name').val();
+    		let email = $('#email').val();
+    		let customer_type_id = $('#customer_type_id').val();
+    		let phone = $('#phone').val();
+    		let alternative_phone = $('#alternative_phone').val();
+    		let tckn = $('#ckn').val();
+    		let status_id = $('#status_id').val();
+
+    		$.ajax({
+    			type: "POST",
+    			url: "{{route('customer.profile.update')}}",
+    			data: {
+    				profile_id: profile_id,
+    				name: name,
+    				email: email,
+    				customer_type_id: customer_type_id,
+    				phone: phone,
+    				alternative_phone: alternative_phone,
+    				tckn: tckn,
+    				status_id: status_id,
+    				_token: '{{csrf_token()}}',
+    			},
+    			success: function(response) {
+    				if (response.success) {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "success",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: true,
+    						confirmButtonText: "Tamam",
+    					}).then((result) => {
+    						if (result.isConfirmed) {
+    							window.location.reload();
+    						}
+    					});
+    				} else {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "error",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: false,
+    						confirmButtonText: "Tamam",
+    					});
+    				}
+    			}
+    		})
+    	})
+
+    	// Adres Bilgisi Güncelle
+    	$('#customerAddressUpdateButton').click(function(e) {
+    		e.preventDefault();
+
+    		let address_id = $('#address_id').val();
+    		let country_id = $('#country_id').val();
+    		let city_id = $('#city_id').val();
+    		let district_id = $('#district_id').val();
+    		let postal_code = $('#postal_code').val();
+    		let address = $('#address').val();
+
+    		$.ajax({
+    			type: "POST",
+    			url: "{{route('customer.address.update')}}",
+    			data: {
+    				address_id: address_id,
+    				country_id: country_id,
+    				city_id: city_id,
+    				district_id: district_id,
+    				postal_code: postal_code,
+    				address: address,
+    				_token: '{{csrf_token()}}',
+    			},
+    			success: function(response) {
+    				if (response.success) {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "success",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: true,
+    						confirmButtonText: "Tamam",
+    					}).then((result) => {
+    						if (result.isConfirmed) {
+    							window.location.reload();
+    						}
+    					});
+    				} else {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "error",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: false,
+    						confirmButtonText: "Tamam",
+    					});
+    				}
+    			}
+    		})
+    	})
+
+    	// Diğer Bilgileri Güncelle
+    	$("#customerOrderInfoButton").click(function(e) {
+    		e.preventDefault();
+
+    		let orderInfo_id = $('#orderInfo_id').val();
+    		let tax_number = $('#tax_number').val();
+    		let tax_office = $('#tax_office').val();
+    		let fax_number = $('#fax_number').val();
+    		let iban = $('#iban').val();
+
+    		$.ajax({
+    			url: "{{ route('customer.order-info.update') }}",
+    			method: 'POST',
+    			data: {
+    				orderInfo_id: orderInfo_id,
+    				tax_number: tax_number,
+    				tax_office: tax_office,
+    				fax_number: fax_number,
+    				iban: iban,
+    				_token: '{{ csrf_token() }}'
+    			},
+    			success: function(response) {
+
+    				if (response.success) {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "success",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: true,
+    						confirmButtonText: "Tamam",
+    					}).then((result) => {
+    						if (result.isConfirmed) {
+    							window.location.reload();
+    						}
+    					});
+
+    				} else {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "error",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: false,
+    						confirmButtonText: "Tamam",
+    					});
+    				}
+    			},
+    			error: function(xhr, status, error) {
+    				Swal.fire({
+    					icon: "error",
+    					title: "Bilinmeyen Bir Hata",
+    					showDenyButton: false,
+    					showCancelButton: false,
+    					confirmButtonText: "Tamam",
+    				});
+    			}
+    		});
+    	});
+
+        // Müşteri Temsilci Bilgisini Güncelle
+        $('#representativeUpdateButton').click(function(e){
             e.preventDefault();
 
-            let profile_id        = $('#profile_id').val();
-            let name              = $('#name').val();
-            let email             = $('#email').val();
-            let customer_type_id  = $('#customer_type_id').val();
-            let phone             = $('#phone').val();
-            let alternative_phone = $('#alternative_phone').val();
-            let tckn              = $('#ckn').val();
-            let status_id         = $('#status_id').val();
+            let representative_id    = $('#representative_id').val();
+            let representative_name  = $('#representative_name').val();
+            let representative_phone = $('#representative_phone').val();
+            let representative_email = $('#representative_email').val();
+            let representative_note  = $('#representative_note').val();
 
             $.ajax({
-                type:"POST",
-                url:"{{route('customer.profile.update')}}",
-                data:{
-                    profile_id:profile_id,
-                    name:name,
-                    email:email,
-                    customer_type_id:customer_type_id,
-                    phone:phone,
-                    alternative_phone:alternative_phone,
-                    tckn:tckn,
-                    status_id:status_id,
-                    _token: '{{csrf_token()}}',
-                },
-                success:function(response){
-                 if(response.success)
-                  {
-                    console.log(response.message);
-                    Swal.fire({
-                    icon : "success",
-                    title: response.message,
-                    showDenyButton: false,
-                    showCancelButton: true,
-                    confirmButtonText: "Tamam",
-                   }).then((result) => {
-                   if (result.isConfirmed) {
-                    window.location.reload();
-                    }
-                   });
-                  }else{
-                    console.log(response.message);
-                    Swal.fire({
-                    icon : "error",
-                    title: response.message,
-                    showDenyButton: false,
-                    showCancelButton: false,
-                    confirmButtonText: "Tamam",
-                   });
-                  }
-                }
-            })
-        })
+    			url: "{{ route('customer.representative.update') }}",
+    			method: 'POST',
+    			data: {
+    				representative_id: representative_id,
+    				representative_name: representative_name,
+    				representative_phone: representative_phone,
+    				representative_email: representative_email,
+    				representative_note: representative_note,
+    				_token: '{{ csrf_token() }}'
+    			},
+    			success: function(response) {
 
-        // Adres Bilgisi Güncelle
-        $('#customerAddressUpdateButton').click(function(e){
-            e.preventDefault();
+    				if (response.success) {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "success",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: true,
+    						confirmButtonText: "Tamam",
+    					}).then((result) => {
+    						if (result.isConfirmed) {
+    							window.location.reload();
+    						}
+    					});
 
-            let address_id  = $('#address_id').val();
-            let country_id  = $('#country_id').val();
-            let city_id     = $('#city_id').val();
-            let district_id = $('#district_id').val();
-            let postal_code = $('#postal_code').val();
-            let address     = $('#address').val();
+    				} else {
+    					console.log(response.message);
+    					Swal.fire({
+    						icon: "error",
+    						title: response.message,
+    						showDenyButton: false,
+    						showCancelButton: false,
+    						confirmButtonText: "Tamam",
+    					});
+    				}
+    			},
+    			error: function(xhr, status, error) {
+    				Swal.fire({
+    					icon: "error",
+    					title: "Bilinmeyen Bir Hata",
+    					showDenyButton: false,
+    					showCancelButton: false,
+    					confirmButtonText: "Tamam",
+    				});
+    			}
+    		});
 
-            $.ajax({
-                type:"POST",
-                url:"{{route('customer.address.update')}}",
-                data:{
-                    address_id:address_id,
-                    country_id:country_id,
-                    city_id:city_id,
-                    district_id:district_id,
-                    postal_code:postal_code,
-                    address:address,
-                    _token: '{{csrf_token()}}',
-                },
-                success:function(response){
-                if(response.success)
-                {
-                    console.log(response.message);
-                    Swal.fire({
-                    title: response.message,
-                    showDenyButton: false,
-                    showCancelButton: true,
-                    confirmButtonText: "Tamam",
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                     window.location.reload();
-                    }
-                    });
-                }else{
-                    console.log(response.message);
-                    Swal.fire({
-                    icon : "error",
-                    title: response.message,
-                    showDenyButton: false,
-                    showCancelButton: false,
-                    confirmButtonText: "Tamam",
-                   });
-                }
-              }
-            })
         })
 
     })

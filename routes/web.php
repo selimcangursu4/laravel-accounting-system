@@ -28,6 +28,8 @@ Route::prefix('/sales')->middleware('auth')->group(function(){
     Route::get('/customers/edit/{id}',[CustomerController::class, 'edit'])->name('customer.edit');
     Route::post('/customers/profile/update',[CustomerController::class, 'updateProfile'])->name('customer.profile.update');
     Route::post('/customers/address/update',[CustomerController::class, 'updateAddress'])->name('customer.address.update');
+    Route::post('/customers/order-info/update',[CustomerController::class,'updateOrderInfo'])->name('customer.order-info.update');
+    Route::post('/customers/representative/update',[CustomerController::class, 'updateRepresentative'])->name('customer.representative.update');
 
 });
 
