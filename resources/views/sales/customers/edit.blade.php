@@ -33,7 +33,7 @@
               <a href="{{route('customer.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4">
                 <i class="fa-solid fa-rotate-left"></i> Geri Dön </a>
             </div>
-            <a type="button" id="save" class="btn btn-flex btn-center btn-primary px-4">
+            <a type="button" class="btn btn-flex btn-center btn-primary px-4">
               <i class="fa-solid fa-floppy-disk"></i> Excele İndir </a>
           </div>
       </div>
