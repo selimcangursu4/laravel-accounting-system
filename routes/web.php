@@ -56,4 +56,6 @@ Route::prefix('/stock')->middleware('auth')->group(function(){
     Route::post('/update-country', [WarehouseController::class, 'changeCountry'])->name('warehouse.country.change');
     Route::post('/change-city',[WarehouseController::class, 'changeCity'])->name('warehouse.city.change');
     Route::post('/warehouse/update',[WarehouseController::class, 'store'])->name('warehouse.store');
+    Route::get('/warehouse/fetch',[WarehouseController::class,'fetch'])->name('warehouse.fetch');
+
 });

@@ -312,6 +312,7 @@
                $('#current_area').css('display', 'none');
            }
        })
+
        // Ülkeye Göre Şehirlerin Filtrelenmesi
        $('#country_id').change(function(e) {
            e.preventDefault();

@@ -27,7 +27,7 @@
             </div>
             <div class="d-flex align-items-center gap-3 gap-lg-5">
                 <div class="m-0">
-                  <a href="{{route('customer.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4">
+                  <a href="{{route('warehouse.view')}}" class="btn btn-flex btn-color-gray-700 bg-body fw-bold px-4">
                     <i class="fa-solid fa-rotate-left"></i> Geri Dön </a>
                 </div>
                 <a type="button" id="save" class="btn btn-flex btn-center btn-primary px-4">
@@ -230,5 +230,7 @@
         })
     })
 
-    })
+
+
+})
 </script>
