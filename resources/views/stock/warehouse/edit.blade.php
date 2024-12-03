@@ -31,20 +31,12 @@
                   <i class="fa-solid fa-rotate-left"></i> Geri Dön </a>
               </div>
               <div>
-                <button type="button" class="btn btn-primary rotate" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-offset="30px, 30px"> İşlemler </button>
-                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-auto min-w-200 mw-300px" data-kt-menu="true">
-                  <div class="separator mb-3 opacity-75"></div>
-                  <div class="menu-item px-3">
-                    <a type="button" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_2">
-                       Depoya Ürün Ekle
-                    </a>
-                  </div>
-                  <div class="menu-item px-3">
-                    <a href="#" class="menu-link px-3">Depo Bilgilerini Yazdır</a>
-                  </div>
-                  <div class="separator mt-3 opacity-75"></div>
-                </div>
+                <a type="button" id="deleteWarehouseButton" data-id="{{$warehouse->id}}" class="btn btn-danger fw-bold px-4">
+                  <i class="fa-solid fa-trash"></i> Depoyu Sil </a>
               </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+                <i class="fa-solid fa-floppy-disk"></i> Güncelle
+            </button>
             </div>
           </div>
         <div class="row mt-7">
@@ -60,9 +52,7 @@
                       </div>
                       <div class="d-flex flex-stack fs-4 py-3">
                         <div class="fw-bold"> Depo Profili </div>
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-                            Güncelle
-                        </button>
+
                       </div>
                       <div class="separator separator-dashed my-3"></div>
                       <div class="pb-5 fs-6">
@@ -113,7 +103,7 @@
                       </div>
                       <div class="card-body">
                         <div class="table-responsive">
-                          <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                          <table class="table table-row-bordered gy-5 kt_datatable_zero_configuration">
                             <thead>
                               <tr class="fw-semibold fs-6 text-muted">
                                 <th>Ürün Kodu</th>
@@ -131,7 +121,7 @@
                                 <td>Akıllı Saat</td>
                                 <td>60</td>
                                 <td>5500 TL</td>
-                                <td>10</td>
+                                <td>10 Adet</td>
                               </tr>
                             </tbody>
                           </table>
@@ -146,15 +136,16 @@
                       </div>
                       <div class="card-body">
                         <div class="table-responsive">
-                          <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                          <table class="table table-row-bordered gy-5 kt_datatable_zero_configuration">
                             <thead>
                               <tr class="fw-semibold fs-6 text-muted">
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th>Ürün Adı</th>
+                                <th>Hareket Tipi</th>
+                                <th>Adet</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                                <th>Teslim Edilen Yer</th>
+                                <th>Sevk Tarihi</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -165,6 +156,7 @@
                                 <td>61</td>
                                 <td>2011/04/25</td>
                                 <td>$320,800</td>
+                                <td></td>
                               </tr>
                             </tbody>
                           </table>
@@ -182,7 +174,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Modal title</h3>
+                    <h3 class="modal-title">Depo Bilgilerini Güncelle</h3>
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                     </div>
@@ -286,38 +278,15 @@
             </div>
         </div>
     </div>
-      {{-- Stok Ekle Modülü --}}
-      <div class="modal fade" tabindex="-1" id="kt_modal_2">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Modal title</h3>
 
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                    </div>
-                    <!--end::Close-->
-                </div>
-
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @include('partials.script')
 <script>
     $(document).ready(function(){
 
-    $("#kt_datatable_zero_configuration").DataTable();
+    $(".kt_datatable_zero_configuration").DataTable();
 
+    // Depo Güncelleme
     $('#warehouseUpdateButton').click(function(e){
         e.preventDefault();
 
@@ -376,6 +345,56 @@
              }
             }
           })
-        })
-    })
+        });
+        // Depo Sil
+    $('#deleteWarehouseButton').click(function(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        icon: "warning",
+        title: "Depoyu Silmek İstediğinize Emin misiniz ?",
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: "Evet , sil !",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let dataId = $(this).data('id');
+
+            $.ajax({
+                type: "POST",
+                url: "{{route('warehouses.delete')}}",
+                data: {
+                    _token: "{{csrf_token()}}",
+                    dataId: dataId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.message);
+                        Swal.fire({
+                            title: response.message,
+                            showDenyButton: false,
+                            showCancelButton: true,
+                            confirmButtonText: "Tamam",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+
+                    } else {
+                        console.log(response.message);
+                        Swal.fire({
+                            title: response.message,
+                            showDenyButton: false,
+                            showCancelButton: true,
+                            confirmButtonText: "Tamam",
+                        })
+
+                    }
+                }
+            })
+        }
+    });
+})
+})
 </script>

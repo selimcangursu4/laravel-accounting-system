@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cities;
 use App\Models\Country;
 use App\Models\District;
+use App\Models\StockMovements;
 use App\Models\User;
 use App\Models\Warehouse;
 use App\Models\WarehouseType;
@@ -13,6 +14,9 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
+
+    // Depo İndex Sayfası
+
     public function index()
     {
         $users     = User::all();
@@ -20,7 +24,10 @@ class WarehouseController extends Controller
         $countries = Country::all();
         $districts = District::all();
         return view('stock.warehouse.index',compact('users', 'cities','countries','districts'));
+
     }
+
+    // Depo Olıuşturma Sayfası
 
     public function create()
     {
@@ -29,13 +36,17 @@ class WarehouseController extends Controller
         $cities    = Cities::all();
         $countries = Country::all();
         return view('stock.warehouse.create',compact('users','countries','cities'));
+
     }
 
 
+    // Yeni Depo Oluştur
 
     public function store(Request $request)
     {
         try {
+
+
             $warehouse = new Warehouse();
             $warehouse->name = $request->input('name');
             $warehouse->warehouse_type_id = $request->input('warehouse_type_id');
@@ -62,7 +73,10 @@ class WarehouseController extends Controller
                 'message' => 'An error occurred while saving the warehouse.'
             ]);
         }
+
     }
+
+    // Depo Detay Sayfası
 
     public function edit(Request $request, $id)
     {
@@ -80,24 +94,28 @@ class WarehouseController extends Controller
         $cities        = Cities::all();
         $districts     = District::all();
 
+
         return view('stock.warehouse.edit', compact('warehouse','warehouseType','users','countries','cities','districts'));
     }
 
+    // Depo Güncelleme
 
     public function update(Request $request)
-{
-    try {
+    {
+     try {
 
         Warehouse::where('id',$request->input('id'))->update([
-             'name' => $request->input('name'),
+
+             'name'              => $request->input('name'),
              'warehouse_type_id' => $request->input('warehouse_type_id'),
-             'status_id' => $request->input('status_id'),
-             'manager_id' => $request->input('manager_id'),
-             'address' => $request->input('address'),
-             'country_id' => $request->input('country_id'),
-             'city_id' => $request->input('city_id'),
-             'district_id' => $request->input('district_id'),
-             'capacity' => $request->input('capacity'),
+             'status_id'         => $request->input('status_id'),
+             'manager_id'        => $request->input('manager_id'),
+             'address'           => $request->input('address'),
+             'country_id'        => $request->input('country_id'),
+             'city_id'           => $request->input('city_id'),
+             'district_id'       => $request->input('district_id'),
+             'capacity'          => $request->input('capacity'),
+
         ]);
 
         return response()->json([
@@ -105,14 +123,16 @@ class WarehouseController extends Controller
             'message' => 'Depo Bilgileri Başarıyla Güncellendi!'
         ]);
 
-    } catch (Exception $th) {
+      } catch (Exception $th) {
         return response()->json([
             'success' => false,
             'message' => 'Bilinmeyen Bir Hata !'
         ]);
-    }
-}
+      }
 
+    }
+
+    // Depoların Listelenmesi
 
     public function fetch(Request $request)
     {
@@ -150,8 +170,26 @@ class WarehouseController extends Controller
         }
 
         return datatables()->of($query)->make(true);
+
     }
 
+    // Depoyu Sil
+    public function delete(Request $request)
+    {
+        try {
+            $warehouse = Warehouse::find($request->input('dataId'));
+            $warehouse->delete();
+            return response()->json([
+               'success' => true,
+               'message' => 'Depo Başarıyla Silindi!'
+            ]);
+        } catch (Exception $th) {
+            return response()->json([
+               'success' => false,
+               'message' => 'Bilinmeyen Bir Hata!'
+            ]);
+        }
+    }
 
     //  Ülkeye Göre Şehirlerin Listelenmesi
 

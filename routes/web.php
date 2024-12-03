@@ -59,5 +59,6 @@ Route::prefix('/stock')->middleware('auth')->group(function(){
     Route::get('/warehouse/fetch',[WarehouseController::class,'fetch'])->name('warehouse.fetch');
     Route::get('/warehouses/edit/{id}',[WarehouseController::class, 'edit'])->name('warehouses.edit');
     Route::post('/warehouses/update',[WarehouseController::class, 'update'])->name('warehouses.update');
+    Route::post('/warehouses/delete',[WarehouseController::class, 'delete'])->name('warehouses.delete');
 
 });
