@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\District;
 use App\Models\User;
 use App\Models\Warehouse;
+use App\Models\WarehouseType;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -63,10 +64,65 @@ class WarehouseController extends Controller
         }
     }
 
+    public function edit(Request $request, $id)
+    {
+        $warehouse = Warehouse::join('warehouse_types', 'warehouse_types.id', '=', 'warehouses.warehouse_type_id')
+        ->where('warehouses.id', $id)
+        ->join('users','users.id','=','warehouses.manager_id')
+        ->join('ulkeler','ulkeler.id','=','warehouses.country_id')
+        ->join('sehirler','sehirler.id','=','warehouses.city_id')
+        ->join('ilceler','ilceler.id','=','warehouses.district_id')
+        ->select('warehouses.*', 'warehouse_types.name as warehouseTypeName','users.name as managerName','ulkeler.baslik as countryName','sehirler.baslik as cityName','ilceler.baslik as districtName')
+        ->first();
+        $warehouseType = WarehouseType::all();
+        $users         = User::all();
+        $countries     = Country::all();
+        $cities        = Cities::all();
+        $districts     = District::all();
+
+        return view('stock.warehouse.edit', compact('warehouse','warehouseType','users','countries','cities','districts'));
+    }
+
+
+    public function update(Request $request)
+{
+    try {
+
+        Warehouse::where('id',$request->input('id'))->update([
+             'name' => $request->input('name'),
+             'warehouse_type_id' => $request->input('warehouse_type_id'),
+             'status_id' => $request->input('status_id'),
+             'manager_id' => $request->input('manager_id'),
+             'address' => $request->input('address'),
+             'country_id' => $request->input('country_id'),
+             'city_id' => $request->input('city_id'),
+             'district_id' => $request->input('district_id'),
+             'capacity' => $request->input('capacity'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Depo Bilgileri Başarıyla Güncellendi!'
+        ]);
+
+    } catch (Exception $th) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Bilinmeyen Bir Hata !'
+        ]);
+    }
+}
+
 
     public function fetch(Request $request)
     {
-        $query = Warehouse::query();
+        $query = Warehouse::query()
+        ->join('users', 'users.id', '=', 'warehouses.manager_id')
+        ->join('ulkeler','ulkeler.id','=','warehouses.country_id')
+        ->join('sehirler','sehirler.id','=','warehouses.city_id')
+        ->join('ilceler','ilceler.id','=','warehouses.district_id')
+        ->select('warehouses.*', 'users.name as manager_name','ulkeler.baslik as country_name','sehirler.baslik as city_name','ilceler.baslik as district_name')
+        ->get();
 
         if ($request->filled('warehouse_id')) {
             $query->where('id', '=', $request->input('warehouse_id'));
@@ -98,6 +154,7 @@ class WarehouseController extends Controller
 
 
     //  Ülkeye Göre Şehirlerin Listelenmesi
+
     public function changeCountry(Request $request)
     {
         $countryId =  $request->input('country_id');

@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <button class="btn btn-warning float-end">Detaylı Filtrele</button>
+                    <button id="warehouseFilterButton" type="button" class="btn btn-warning float-end">Detaylı Filtrele</button>
                 </div>
                </div>
             </div>
@@ -149,7 +149,7 @@
 <script>
 $(document).ready(function() {
 
-$("#kt_datatable_zero_configuration").DataTable({
+let table = $("#kt_datatable_zero_configuration").DataTable({
     serverSide: true,
     processing: true,
     ajax: {
@@ -198,16 +198,16 @@ $("#kt_datatable_zero_configuration").DataTable({
             }
         },
         {
-            data: "manager_id"
+            data: "manager_name"
         },
         {
-            data: "country_id"
+            data: "country_name"
         },
         {
-            data: "city_id"
+            data: "city_name"
         },
         {
-            data: "district_id"
+            data: "district_name"
         },
         {
             data: "status_id",
@@ -229,13 +229,18 @@ $("#kt_datatable_zero_configuration").DataTable({
             data: "action",
             render: function(data, type, row) {
                 return `
-                  <span class="badge badge-primary">Görüntüle</span>
+                  <a href="/stock/warehouses/edit/${row.id}"><span class="badge badge-primary">Görüntüle</span></a>
                   <span class="badge badge-danger">Pasife Al</span>
               `;
             }
         }
     ]
 });
+
+$('#warehouseFilterButton').click(function(e){
+    e.preventDefault();
+    table.draw();
+})
 
 
 // Filtreleme alanında ülkeye göre ilin listelenmesi
