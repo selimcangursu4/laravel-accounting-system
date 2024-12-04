@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SmsController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
@@ -60,5 +61,17 @@ Route::prefix('/stock')->middleware('auth')->group(function(){
     Route::get('/warehouses/edit/{id}',[WarehouseController::class, 'edit'])->name('warehouses.edit');
     Route::post('/warehouses/update',[WarehouseController::class, 'update'])->name('warehouses.update');
     Route::post('/warehouses/delete',[WarehouseController::class, 'delete'])->name('warehouses.delete');
+
+});
+
+
+Route::prefix('acquisition')->middleware('auth')->group(function(){
+
+    Route::get('/suppliers/view',[SupplierController::class,'index'])->name('suppliers.view');
+    Route::get('/get-city',[SupplierController::class,'getCity'])->name('suppliers.getCity');
+    Route::get('/get-district',[SupplierController::class,'getDistrict'])->name('suppliers.getDistrict');
+    Route::get('/suppliers/fetch',[SupplierController::class,'fetch'])->name('suppliers.fetch');
+    Route::get('/suppliers/create',[SupplierController::class,'create'])->name('suppliers.create');
+    Route::post('/suppliers/store',[SupplierController::class,'store'])->name('suppliers.store');
 
 });

@@ -106,7 +106,6 @@
                           <table class="table table-row-bordered gy-5 kt_datatable_zero_configuration">
                             <thead>
                               <tr class="fw-semibold fs-6 text-muted">
-                                <th>Ürün Kodu</th>
                                 <th>Ürün Adı</th>
                                 <th>Kategori</th>
                                 <th>Stok Miktarı</th>
@@ -115,14 +114,15 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Wiky Watch 4 Plus</td>
-                                <td>Akıllı Saat</td>
-                                <td>60</td>
-                                <td>5500 TL</td>
-                                <td>10 Adet</td>
-                              </tr>
+                                @foreach ($warehouseStocks as $warehouseStock )
+                                <tr>
+                                    <td>{{$warehouseStock->product_id}}</td>
+                                    <td>{{$warehouseStock->product_id}}</td>
+                                    <td>{{$warehouseStock->quantity}}</td>
+                                    <td>{{$warehouseStock->quantity}}</td>
+                                    <td>5500 TL</td>
+                                  </tr>
+                                @endforeach
                             </tbody>
                           </table>
                         </div>

@@ -8,6 +8,7 @@ use App\Models\District;
 use App\Models\StockMovements;
 use App\Models\User;
 use App\Models\Warehouse;
+use App\Models\WarehouseStock;
 use App\Models\WarehouseType;
 use Exception;
 use Illuminate\Http\Request;
@@ -93,9 +94,10 @@ class WarehouseController extends Controller
         $countries     = Country::all();
         $cities        = Cities::all();
         $districts     = District::all();
+        $warehouseStocks = WarehouseStock::where('warehouse_id','=',$id)->get();
 
 
-        return view('stock.warehouse.edit', compact('warehouse','warehouseType','users','countries','cities','districts'));
+        return view('stock.warehouse.edit', compact('warehouse','warehouseType','users','countries','cities','districts','warehouseStocks'));
     }
 
     // Depo Güncelleme

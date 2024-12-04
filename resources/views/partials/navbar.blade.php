@@ -75,7 +75,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="../dist/pages/team.html">
+                            <a class="menu-link" href="{{route('suppliers.view')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -161,7 +161,7 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Kritik Stok Uyarıları</span>
+                                <span class="menu-title">İrsaliyeler</span>
                             </a>
                         </div>
                         <div class="menu-item">
