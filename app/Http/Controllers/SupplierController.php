@@ -18,12 +18,60 @@ class SupplierController extends Controller
         return view('acquisition.suppliers.index',compact('countries'));
     }
 
+    // Tedarikçi Ekleme Sayfası
     public function create(Request $request)
     {
         $countries = Country::all();
         return view('acquisition.suppliers.create',compact('countries'));
     }
 
+    // Tedarikçi Düzenleme Sayfası
+    public function edit(Request $request , $id)
+    {
+        $countries = Country::all();
+        $supplier  = Suppliers::find($id);
+        $cities    = Cities::all();
+        $districts = District::all();
+        return view('acquisition.suppliers.edit',compact('supplier','countries','cities','districts'));
+    }
+
+    public function delete(Request $request)
+    {
+        $supplier = Suppliers::where('id','=',$request->input('data_id'));
+        $supplier->delete();
+        return response()->json(['success' => true,'message' => 'Tedarikçi Başarıyla Silindi!']);
+    }
+
+    // Tedarikçi Güncelleme İşlemi
+    public function update(Request $request)
+    {
+        try {
+            $supplier = Suppliers::where('id','=',$request->input('supplier_id'));
+
+            if($supplier)
+            {
+                $supplier->update([
+                    'name' => $request->input('supplier_name'),
+                    'contact_person' => $request->input('supplier_contact_name'),
+                    'email' => $request->input('supplier_email'),
+                    'phone' => $request->input('supplier_phone'),
+                    'address' => $request->input('address'),
+                    'tax_number' => $request->input('supplier_tax_number'),
+                    'status_id' => $request->input('supplier_status_id'),
+                    'country_id' => $request->input('supplier_country_id'),
+                    'city_id' => $request->input('supplier_city_id'),
+                    'district_id' => $request->input('supplier_district_id'),
+                    'note' => $request->input('note'),
+                ]);
+
+                return response()->json(['success' => true,'message' => 'Tedarikçi Başarıyla Düzenlendi!']);
+            }
+        } catch (Exception $th) {
+            return response()->json(['success' => false,'message' => $th]);
+        }
+    }
+
+    // Tedarikçi Ekleme İşlemi
     public function store(Request $request)
     {
        try {
@@ -49,6 +97,7 @@ class SupplierController extends Controller
 
     }
 
+    // Tedarikçileri Listele
     public function fetch(Request $request)
     {
         $query = Suppliers::query();
@@ -89,8 +138,6 @@ class SupplierController extends Controller
         return datatables()->of($query)->make(true);
     }
 
-
-
     // Ülkeye Göre Şehirlerin Listelenmesi
     public function getCity(Request $request)
     {
@@ -105,5 +152,14 @@ class SupplierController extends Controller
         $districts = District::where('sehir_id','=',$request->input('city_id'))->get();
 
         return response()->json($districts);
+    }
+
+    public function passive(Request $request)
+    {
+        $supplier = Suppliers::where('id', '=', $request->input('id'))->update(['status_id' => $request->input('status_id')]);
+
+
+
+        return response()->json(['success' => true,'message' => 'Tedarikçi Başarıyla Durduruldu!']);
     }
 }

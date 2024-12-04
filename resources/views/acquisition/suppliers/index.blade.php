@@ -133,8 +133,8 @@
 @endsection
 @include('partials.script')
 <script>
-    $(document).ready(function() {
-      $("#kt_datatable_zero_configuration").DataTable({
+        $(document).ready(function() {
+        $("#kt_datatable_zero_configuration").DataTable({
             serverSide: true,
             processing: true,
             ajax: {
@@ -181,7 +181,7 @@
                     data: 'action',
                     render: function(data, type, row) {
                         return `
-                    <a href="" class="btn btn-sm btn-primary btn-icon-only">
+                    <a href="/acquisition/suppliers/edit/${row.id}" class="btn btn-sm btn-primary btn-icon-only">
                         <i class="fas fa-edit"></i>
                     </a>
                     <button class="btn btn-sm btn-danger btn-icon-only delete-btn" data-id="${row.id}">
@@ -241,7 +241,37 @@
                 }
             })
         });
-        //
+        // Tedarikçiyi Pasife Al
 
+        $(document).on('click', '.delete-btn', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+
+            Swal.fire({
+                title: "Tedarikçiyi Pasife Almak İstediğinize Eminmisiniz ?",
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: "Tamam",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('suppliers.passive') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: id,
+                            status_id: 0
+                        },
+                        success: function(response) {
+                            Swal.fire("Pasif Alindi", "Tedarikçi pasif edildi", "success");
+                            $('#kt_datatable_zero_configuration').DataTable().ajax.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire("Hata", "Bir hata oluştu: " + error, "error");
+                        }
+                    });
+                }
+            });
+        });
     })
 </script>

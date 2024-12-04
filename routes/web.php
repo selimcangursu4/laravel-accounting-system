@@ -73,5 +73,8 @@ Route::prefix('acquisition')->middleware('auth')->group(function(){
     Route::get('/suppliers/fetch',[SupplierController::class,'fetch'])->name('suppliers.fetch');
     Route::get('/suppliers/create',[SupplierController::class,'create'])->name('suppliers.create');
     Route::post('/suppliers/store',[SupplierController::class,'store'])->name('suppliers.store');
-
+    Route::get('/suppliers/edit/{id}',[SupplierController::class,'edit'])->name('suppliers.edit');
+    Route::post('/suppliers/update',[SupplierController::class,'update'])->name('suppliers.update');
+    Route::post('/suppliers/delete',[SupplierController::class,'delete'])->name('suppliers.delete');
+    Route::post('/suppliers/passive',[SupplierController::class,'passive'])->name('suppliers.passive');
 });
